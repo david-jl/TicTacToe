@@ -46,13 +46,9 @@ td, tr{
 
 #volver{
     align-self: center;
-    padding: 5%;
-    background-color: white;
-    border: 1px solid royalblue;
 }
 #turno_jugador{
     margin-top: 2%;
-
     align-self: center;
     justify-self: center;
 }
