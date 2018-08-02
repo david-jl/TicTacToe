@@ -41,6 +41,11 @@ function dibujar(table) {
         turno = true;
         turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
+        $(function(){
+            $(".flip").flip({
+                trigger: 'click'
+            });
+        });
         partidaGanada();
     }
     else if (casillero[celda] === 0) {
@@ -101,8 +106,8 @@ function partidaGanada() {
     } else if (ganador === -1) {
         alert("Empate");
     }
-
 }
+
 
 
 

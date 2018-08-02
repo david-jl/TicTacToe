@@ -1,7 +1,38 @@
 .main{
     height: 100vh;
+    background: linear-gradient(to bottom,#4FC3F7 ,#B3E5FC);
 }
 
 .header{
     color: white;
 }
+
+.myButton {
+    width: 50vh;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    color: #000000;
+    font-size: 24px;
+    padding: 30px;
+    background-color: rgba(0,0,0,0);
+    border: solid #FFFFFF 4px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+@media (min-width: 760px) {
+    .myButton{
+        width: 80vh;
+    }
+}
+
+.myButton:hover {
+    color: black;
+    background: #FFFFFF;
+    text-decoration: none;
+}
+
+
+
