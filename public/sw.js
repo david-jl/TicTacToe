@@ -1,9 +1,7 @@
 ;
 const CACHE_NAME = 'v1_cache_tic_tac_toe',
     urlsToCache = [
-        'index.html',
-        'script.js',
-        'img/tictactoe.png'
+        '*'
     ]
 
 
