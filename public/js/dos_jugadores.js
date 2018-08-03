@@ -7,6 +7,7 @@ var casilla6 = document.getElementById("casilla6");
 var casilla7 = document.getElementById("casilla7");
 var casilla8 = document.getElementById("casilla8");
 var casilla9 = document.getElementById("casilla9");
+var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 
 var casillero = [
@@ -16,6 +17,24 @@ var casillero = [
 ];
 var casillas = [casilla1 ,casilla2 ,casilla3,casilla4,casilla5,casilla6,casilla7,casilla8,casilla9];
 var turno = false;
+
+var ganador = 0;
+reiniciar.style.display = "none";
+
+function init() {
+    casillero = [
+        0,0,0,
+        0,0,0,
+        0,0,0,
+    ];
+    reiniciar.style.display = "none";
+    turno_jugador.textContent = "";
+    ganador = 0;
+    var i;
+    for(i = 0; casillas.length; i++){
+        casillas[i].style.backgroundImage = "none";
+    }
+}
 
 var table = document.getElementById("casilla");
 var i = 0;
@@ -97,15 +116,17 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
+        turno_jugador.textContent = "Ha ganado el jugador" + ganador;
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
-        init();
+        reiniciar.style.display = "block";
+        reiniciar.onclick = init;
     } else if (ganador === -1) {
         turno_jugador.textContent = "Empate";
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
-        init();
+        reiniciar.style.display = "block";
+        reiniciar.onclick = init;
     }
 }
 

@@ -7,7 +7,7 @@ var casilla6 = document.getElementById("casilla6");
 var casilla7 = document.getElementById("casilla7");
 var casilla8 = document.getElementById("casilla8");
 var casilla9 = document.getElementById("casilla9");
-var textoPartidaGanada = document.getElementById("textoPartidaGanada");
+var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 
 var casillero = [
@@ -17,8 +17,23 @@ var casillero = [
 ];
 var casillas = [casilla1 ,casilla2 ,casilla3,casilla4,casilla5,casilla6,casilla7,casilla8,casilla9];
 var turno = false;
+var ganador = 0;
+reiniciar.style.display = "none";
 
-
+function init() {
+     casillero = [
+        0,0,0,
+        0,0,0,
+        0,0,0,
+     ];
+    reiniciar.style.display = "none";
+    turno_jugador.textContent = "";
+    ganador = 0;
+    var i;
+     for(i = 0; casillas.length; i++){
+         casillas[i].style.backgroundImage = "none";
+     }
+}
 
 function azar() {
     if(gana_ia()!== -1)
@@ -61,7 +76,7 @@ function dibujar_ia() {
 }
 function dibujar(table) {
     var celda = table.innerHTML - 1;
-    if(casillero[celda] === 0){
+    if(casillero[celda] === 0 && ganador === 0){
         casillas[celda].style.backgroundImage = "url(../img/circulo.png)";
         casillas[celda].style.backgroundRepeat = "no-repeat";
         casillas[celda].style.backgroundPosition = "center";
@@ -177,7 +192,6 @@ function ia_dosCuadrados() {
 }
 
 function partidaGanada() {
-    var ganador = 0;
     if (casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 1)
         ganador = 1;
     else if (casillero[0] === 2 && casillero[1] === 2 && casillero[2] === 2)
@@ -216,15 +230,20 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
+        if(ganador ===1)
+            turno_jugador.textContent = "Has ganado";
+        else if(ganador ===2)
+            turno_jugador.textContent = "Has perdido";
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
-        init();
+        reiniciar.style.display = "block";
+        reiniciar.onclick = init;
     } else if (ganador === -1) {
         turno_jugador.textContent = "Empate";
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
-        init();
+        reiniciar.style.display = "block";
+        reiniciar.onclick = init;
     }
 }
 
