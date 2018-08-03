@@ -28,8 +28,11 @@ function init() {
         0,0,0,
     ];
     reiniciar.style.display = "none";
-    turno_jugador.textContent = "";
+    turno_jugador.textContent = "Turno O";
     ganador = 0;
+    turno = false;
+    turno_jugador.style.fontSize = "1em";
+    turno_jugador.style.color = "#7F8793";
     var i;
     for(i = 0; casillas.length; i++){
         casillas[i].style.backgroundImage = "none";
@@ -116,7 +119,7 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        turno_jugador.textContent = "Ha ganado el jugador" + ganador;
+        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
