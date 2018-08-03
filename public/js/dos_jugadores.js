@@ -97,9 +97,15 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        alert("Ha ganado el jugador " + ganador);
+        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
+        turno_jugador.style.fontSize = "2em";
+        turno_jugador.style.color = "#000000";
+        init();
     } else if (ganador === -1) {
-        alert("Empate");
+        turno_jugador.textContent = "Empate";
+        turno_jugador.style.fontSize = "2em";
+        turno_jugador.style.color = "#000000";
+        init();
     }
 }
 

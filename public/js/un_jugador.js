@@ -7,6 +7,7 @@ var casilla6 = document.getElementById("casilla6");
 var casilla7 = document.getElementById("casilla7");
 var casilla8 = document.getElementById("casilla8");
 var casilla9 = document.getElementById("casilla9");
+var textoPartidaGanada = document.getElementById("textoPartidaGanada");
 var turno_jugador = document.getElementById("turno_jugador");
 
 var casillero = [
@@ -55,7 +56,6 @@ function dibujar_ia() {
     casillas[numero].style.backgroundPosition = "center";
     casillas[numero].style.backgroundSize = "80%";
     turno = false;
-    turno_jugador.textContent = "Turno O";
     casillero[numero] = 2;
     partidaGanada();
 }
@@ -67,7 +67,6 @@ function dibujar(table) {
         casillas[celda].style.backgroundPosition = "center";
         casillas[celda].style.backgroundSize = "80%";
         turno = true;
-        turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
         partidaGanada();
         dibujar_ia();
@@ -217,12 +216,16 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        alert("Ha ganado el jugador " + ganador);
+        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
+        turno_jugador.style.fontSize = "2em";
+        turno_jugador.style.color = "#000000";
         init();
     } else if (ganador === -1) {
-        alert("Empate");
+        turno_jugador.textContent = "Empate";
+        turno_jugador.style.fontSize = "2em";
+        turno_jugador.style.color = "#000000";
         init();
     }
-
 }
+
 
