@@ -18,14 +18,38 @@
     <link rel="stylesheet" href="../css/juego.css">
     <link rel="stylesheet" href="../css/main.css">
     <script src="../js/dos_jugadores.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body class="main">
 <main >
+
+
+    </head>
+
+    <body>
+    <div id="something"><img src="../img/tictactoe.jpg" /></div><br /> <!-- you can change the name of the pic -->
+    <input name="" type="button" value="Change" onclick="ani()" />
+
     <table id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td class="casilla" id="casilla1">1</td>
-            <td class="casilla" id="casilla2">2</td>
-            <td class="casilla" id="casilla3">3</td>
+            <td class="casilla" id="casilla1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <title>Circulo</title>
+                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <title>Circulo</title>
+                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <title>Circulo</title>
+                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
         </tr>
         <tr>
             <td class="casilla" id="casilla4">4</td>
@@ -41,6 +65,8 @@
     <p id="turno_jugador">Turno O</p>
     <button onclick="location.href='../index.html'" class="btn btn-secondary" type="button" id="volver">Volver</button>
 </main>
+
+
 <script src="../js/dos_jugadores.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

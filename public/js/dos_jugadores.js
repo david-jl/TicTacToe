@@ -10,6 +10,9 @@ var casilla9 = document.getElementById("casilla9");
 var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 
+function ani(){
+    document.getElementById('casilla1').className ='classname';
+}
 var casillero = [
     0,0,0,
     0,0,0,
