@@ -81,19 +81,17 @@ svg path {
     width: 50%;
     stroke: #000;
     stroke-dasharray: 300;
-    stroke-width: 2px;
+    stroke-width: 1px;
     stroke-dashoffset: 300px;
     pointer-events:all;
 }
-path:not(:active){
-    animation: 3s trazar 1 forwards;
+.animacion{
 }
 
 
 @keyframes trazar{
     80% {
         stroke-dashoffset: 0;
-        stroke-width: 3px;
     }
 
     90% {
@@ -108,24 +106,4 @@ path:not(:active){
         stroke-width: 3px;
     }
 }
-.classname
-{
-    display: block;
-    stroke-dasharray: 300;
-    width: 80%;
-    stroke-dashoffset: 300px;
-    margin: 0 auto;
-    fill: none;
-    stroke: #000;
-    stroke-width: 2px;
-    pointer-events:all;
-    animation:trazar 2s;
-    -moz-animation:trazar 2s; /* Firefox */
-    -webkit-animation:trazar 2s; /* Safari and Chrome */
-    animation-direction:alternate;
-    -moz-animation-direction:alternate;
-    -webkit-animation-direction:alternate;
-    animation-timing-function:linear;
-    -moz-animation-timing-function:linear; /* Firefox */
-    -webkit-animation-timing-function:linear; /* Safari and Chrome */
-}
+

@@ -22,44 +22,57 @@
 </head>
 <body class="main">
 <main >
-
-
-    </head>
-
-    <body>
-    <div id="something"><img src="../img/tictactoe.jpg" /></div><br /> <!-- you can change the name of the pic -->
-    <input name="" type="button" value="Change" onclick="ani()" />
-
     <table id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td class="casilla" id="casilla1">
+            <td class="casilla" id="casilla1" onclick="dibujar(0)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
-                    <title>Circulo</title>
-                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                    <path class="animacion" id="circulo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
-            <td class="casilla" id="casilla2">
+            <td class="casilla" id="casilla2" onclick="dibujar(1)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
-                    <title>Circulo</title>
-                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                    <path class="animacion" id="circulo2" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
-            <td class="casilla" id="casilla3">
+            <td class="casilla" id="casilla3"  onclick="dibujar(2)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
-                    <title>Circulo</title>
-                    <path id="trazo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                    <path class="animacion" id="circulo3" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
         </tr>
         <tr>
-            <td class="casilla" id="casilla4">4</td>
-            <td class="casilla" id="casilla5">5</td>
-            <td class="casilla" id="casilla6">6</td>
+            <td class="casilla" id="casilla4" onclick="dibujar(3)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo4" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla5" onclick="dibujar(4)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo5" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla6" onclick="dibujar(5)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo6" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
         </tr>
         <tr>
-            <td class="casilla" id="casilla7">7</td>
-            <td class="casilla" id="casilla8">8</td>
-            <td class="casilla" id="casilla9">9</td>
+            <td class="casilla" id="casilla7" onclick="dibujar(6)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo7" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla8" onclick="dibujar(7)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo8" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
+            <td class="casilla" id="casilla9" onclick="dibujar(8)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                    <path class="animacion" id="circulo9" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                </svg>
+            </td>
         </tr>
     </table>
     <p id="turno_jugador">Turno O</p>

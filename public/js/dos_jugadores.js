@@ -9,16 +9,26 @@ var casilla8 = document.getElementById("casilla8");
 var casilla9 = document.getElementById("casilla9");
 var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
+var circulo1 = document.getElementById("circulo1");
+var circulo2 = document.getElementById("circulo2");
+var circulo3 = document.getElementById("circulo3");
+var circulo4 = document.getElementById("circulo4");
+var circulo5 = document.getElementById("circulo5");
+var circulo6 = document.getElementById("circulo6");
+var circulo7 = document.getElementById("circulo7");
+var circulo8 = document.getElementById("circulo8");
+var circulo9 = document.getElementById("circulo9");
 
-function ani(){
-    document.getElementById('casilla1').className ='classname';
-}
+
+
 var casillero = [
     0,0,0,
     0,0,0,
     0,0,0,
 ];
 var casillas = [casilla1 ,casilla2 ,casilla3,casilla4,casilla5,casilla6,casilla7,casilla8,casilla9];
+var circulos = [circulo1 ,circulo2 ,circulo3 ,circulo4 ,circulo5 ,circulo6 ,circulo7 ,circulo8 ,circulo9];
+
 var turno = false;
 
 var ganador = 0;
@@ -38,31 +48,18 @@ function init() {
     turno_jugador.style.color = "#7F8793";
     var i;
     for(i = 0; casillas.length; i++){
-        casillas[i].style.backgroundImage = "none";
-    }
-}
-
-var table = document.getElementById("casilla");
-var i = 0;
-var j = 0;
-if (table != null) {
-    for ( i = 0; i < table.rows.length; i++) {
-        for ( j = 0; j < table.rows[i].cells.length; j++)
-            table.rows[i].cells[j].onclick = function () {
-                dibujar(this);
-            };
+        circulos[i].style.animation = "none";
     }
 }
 
 
-function dibujar(table) {
 
-    var celda = table.innerHTML - 1;
+
+
+function dibujar(celda) {
+
     if (turno === false && casillero[celda] === 0) {
-        casillas[celda].style.backgroundImage = "url(../img/circulo.png)";
-        casillas[celda].style.backgroundRepeat = "no-repeat";
-        casillas[celda].style.backgroundPosition = "center";
-        casillas[celda].style.backgroundSize = "80%";
+        circulos[celda].style.animation = "3s trazar 1 forwards";
         turno = true;
         turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
@@ -135,6 +132,9 @@ function partidaGanada() {
         reiniciar.onclick = init;
     }
 }
+
+
+
 
 
 
