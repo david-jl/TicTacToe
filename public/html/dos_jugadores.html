@@ -25,51 +25,87 @@
     <table id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="casilla" id="casilla1" onclick="dibujar(0)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
-                    <path class="animacion" id="circulo1" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
+                <svg display="none" id="cruz1svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <path id="cruz1A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz1B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir1svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" >
+                    <path id="circulo1" class="animacion"  style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
-            <td class="casilla" id="casilla2" onclick="dibujar(1)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+            <td class="casilla" id="casilla2"  onclick="dibujar(1)">
+                <svg display="none" id="cruz2svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <path id="cruz2A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz2B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir2svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo2" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
             <td class="casilla" id="casilla3"  onclick="dibujar(2)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz3svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz3A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz3B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir3svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo3" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
         </tr>
         <tr>
             <td class="casilla" id="casilla4" onclick="dibujar(3)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz4svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz4A"class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz4B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir4svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo4" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
             <td class="casilla" id="casilla5" onclick="dibujar(4)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz5svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz5A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz5B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir5svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo5" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
             <td class="casilla" id="casilla6" onclick="dibujar(5)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz6svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz6A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz6B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir6svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo6" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
         </tr>
         <tr>
             <td class="casilla" id="casilla7" onclick="dibujar(6)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz7svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz7A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz7B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir7svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo7" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
             <td class="casilla" id="casilla8" onclick="dibujar(7)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz8svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz8A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz8B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir8svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo8" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>
             <td class="casilla" id="casilla9" onclick="dibujar(8)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
+                <svg display="none" id="cruz9svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path id="cruz9A" class="cross__path cross__path--left" fill="none" d="M16,16 l20,20"></path>
+                    <path id="cruz9B" class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20"></path>
+                </svg>
+                <svg display="none" id="cir9svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" >
                     <path class="animacion" id="circulo9" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" d="M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z" font-weight="400" font-family="sans-serif" white-space="normal" overflow="visible" fill="none"></path>
                 </svg>
             </td>

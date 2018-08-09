@@ -67,43 +67,66 @@ td, tr{
     border-bottom: 4px solid lightslategray;
 }
 
+@keyframes parpadeo {
+    0%,40%,80%{
+        opacity: 0;
+    }
+    20%,60%,100%{
+        opacity: 1;
+        stroke-dashoffset: 0;
+    }
+}
+
+
 
 svg {
-    display: block;
+
     stroke-dasharray: 300;
-    width: 80%;
+    width: 70%;
     stroke-dashoffset: 300px;
     margin: 0 auto;
 }
 
 svg path {
     fill: none;
-    width: 50%;
     stroke: #000;
     stroke-dasharray: 300;
-    stroke-width: 1px;
+    stroke-width: 2px;
     stroke-dashoffset: 300px;
     pointer-events:all;
 }
-.animacion{
-}
-
 
 @keyframes trazar{
-    80% {
-        stroke-dashoffset: 0;
-    }
-
-    90% {
-        stroke-width: 3px;
-        opacity: 1;
-    }
-
     100% {
-        opacity: 1;
-        stroke-dasharray: 300;
         stroke-dashoffset: 0;
         stroke-width: 3px;
+    }
+}
+
+.cross__svg{
+    width: 100%;
+    margin: 0;
+}
+
+.cross__path {
+    stroke: white;
+    width: 120px;
+    height: 120px;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48px;
+}
+.cross__path--left{
+    width: 120px;
+    height: 120px;
+}
+.cross__path--right{
+    width: 120px;
+    height: 120px;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
     }
 }
 
