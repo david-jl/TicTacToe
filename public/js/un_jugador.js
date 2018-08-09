@@ -108,7 +108,6 @@ function dibujar_ia() {
         cruzA[numero].style.animation = "0.5s 0.5s stroke 1 forwards";
         cruzB[numero].style.animation = "0.5s 0.7s stroke 1 forwards";
         turno = false;
-        turno_jugador.textContent = "Turno O";
         casillero[numero] = 2;
         partidaGanada();
     }
@@ -118,7 +117,6 @@ function dibujar(celda) {
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno = true;
-        turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
         partidaGanada();
         dibujar_ia()
