@@ -1,27 +1,3 @@
-var config = {
-    apiKey: "AIzaSyDTN_mQbgHDxcrNYdZFA91pB6cnXzvX5BE",
-    authDomain: "tictactoedavidjl.firebaseapp.com",
-    databaseURL: "https://tictactoedavidjl.firebaseio.com",
-    projectId: "tictactoedavidjl",
-    storageBucket: "tictactoedavidjl.appspot.com",
-    messagingSenderId: "210066737521"
-};
-firebase.initializeApp(config);
-
-// Reference messages collection
-var partidas = firebase.database().ref('partidas/as');
-
-function colocar_jugada(casilla, jugador){
-    var nuevaJugada = partidas.push();
-    nuevaJugada.set({
-        casilla: casilla,
-        jugador: jugador,
-    });
-}
-
-
-
-
 var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 var circulo1 = document.getElementById("circulo1");
@@ -114,13 +90,13 @@ function init() {
 }
 
 function dibujar(celda) {
+
     if (turno === false && casillero[celda] === 0 && ganador === 0) {
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno = true;
         turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
-        colocar_jugada(celda, 1);
         partidaGanada();
     }
     else if (casillero[celda] === 0 && ganador === 0) {
@@ -130,7 +106,6 @@ function dibujar(celda) {
         turno = false;
         turno_jugador.textContent = "Turno O";
         casillero[celda] = 2;
-        colocar_jugada(celda, 2);
         partidaGanada();
     }
 }
@@ -212,14 +187,12 @@ function partidaGanada() {
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
         reiniciar.onclick = init;
-        partidas.remove();
     } else if (ganador === -1) {
         turno_jugador.textContent = "Empate";
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
         reiniciar.onclick = init;
-        partidas.remove();
     }
 }
 

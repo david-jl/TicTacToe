@@ -1,4 +1,3 @@
-
 var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 var circulo1 = document.getElementById("circulo1");
@@ -67,22 +66,22 @@ var ganador = 0;
 reiniciar.style.display = "none";
 
 function init() {
-     casillero = [
+    casillero = [
         0,0,0,
         0,0,0,
         0,0,0,
-     ];
+    ];
     reiniciar.style.display = "none";
     turno_jugador.textContent = "";
     ganador = 0;
     var i;
-     for(i = 0; circulos.length; i++){
-         circulos[i].style.animation = "none";
-         cruzB[i].style.animation = "none";
-         cruzA[i].style.animation = "none";
-         cruzsvg[i].style.display = "none";
-         cirsvg[i].style.display = "none";
-     }
+    for(i = 0; circulos.length; i++){
+        circulos[i].style.animation = "none";
+        cruzB[i].style.animation = "none";
+        cruzA[i].style.animation = "none";
+        cruzsvg[i].style.display = "none";
+        cirsvg[i].style.display = "none";
+    }
 }
 
 function azar() {
@@ -331,5 +330,3 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
         cruzB[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
     }
 }
-
-

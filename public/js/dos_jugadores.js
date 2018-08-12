@@ -215,7 +215,3 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
     }
 }
 
-
-
-
-
