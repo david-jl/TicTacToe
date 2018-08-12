@@ -49,6 +49,98 @@ var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
 
+/*const auth = firebase.auth();
+$(document).ready(function() {
+    auth.signInAnonymously();
+});
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        console.log(user.uid.substring(0,5));
+    }
+});*/
+
+
+var partidas = firebase.database().ref('partidas/');
+function guardarMovimiento(turno, casilla){
+    var nuevaPartida = partidas.push();
+    nuevaPartida.set({
+        turno: turno,
+        casilla:casilla
+    });
+}
+partidas.on('value', function(snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+        var casilla = childSnapshot.val().casilla;
+        var turno = childSnapshot.val().turno;
+        console.log("casilla: " + casilla + " y turno: " + turno);
+        dibujar(casilla, turno);
+    });
+});
+
+var $crearPartida = $("#crearPartida");
+var $unirsePartida = $("#unirsePartida");
+var $loby = $(".loby");
+
+function guardarMovimiento(turno, casilla){
+    var nuevaPartida = partidas.push();
+    nuevaPartida.set({
+        turno: turno,
+        casilla:casilla
+    });
+}
+
+$crearPartida.on("click", function () {
+    $unirsePartida.css("display", "none");
+    $crearPartida.css("display", "none");
+    var partida = firebase.database().ref('partidas/').push();
+    var id = partida.key;
+    $loby.append("<p id='bbdd'></p>");
+    $("#bbdd").text(id);
+    partida.set({
+        jugador: 1
+    });
+});
+
+partidas.on('value', function(snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+        var casilla = childSnapshot.val().casilla;
+        var turno = childSnapshot.val().turno;
+        console.log("casilla: " + casilla + " y turno: " + turno);
+        dibujar(casilla, turno);
+    });
+});
+
+/*Boton unirse partida
+Desaparecen los dos botones anteriores
+Al clickear en el boton enviar mira lo que hay en el input y busca la ruta en la base de datos
+Si existe, pone a 2 el numero de jugadores y empieza la partida
+ */
+$unirsePartida.on("click", function () {
+    $unirsePartida.css("display", "none");
+    $crearPartida.css("display", "none");
+    $loby.append("<input type='text' name='texto1'/>" +
+        "<button type='submit' id='enviar'>Enviar</button>");
+    $("#enviar").on("click", function () {
+        var texto =document.getElementsByName("texto1")[0].value;
+        firebase.database().ref('partidas/' + texto).on("value", function (snapshot) {
+            if(snapshot.exists()){
+                firebase.database().ref('partidas/' + texto).set({jugador: 2});
+                empiezaPartida(2);
+            } else {
+                //TODO: poner algo para que quede bonito de error
+                console.log("Error");
+            }
+        })
+    });
+});
+
+
+function empiezaPartida(turno) {
+    $loby.css("display", "none");
+    $("main").css("display", "inline-flex");
+}
+
+
 
 var casillero = [
     0,0,0,
@@ -61,9 +153,11 @@ var cruzB = [cruz1B, cruz2B, cruz3B, cruz4B, cruz5B, cruz6B, cruz7B, cruz8B, cru
 var cirsvg = [cir1svg, cir2svg, cir3svg, cir4svg, cir5svg, cir6svg, cir7svg, cir8svg, cir9svg];
 var cruzsvg = [cruz1svg, cruz2svg, cruz3svg, cruz4svg, cruz5svg, cruz6svg, cruz7svg, cruz8svg, cruz9svg];
 
-
-var turno = false;
-
+$("#volver").on("click", function () {
+    partidas.remove();
+    auth.signOut();
+    location.href = "../index.html";
+});
 var ganador = 0;
 reiniciar.style.display = "none";
 
@@ -76,9 +170,9 @@ function init() {
     reiniciar.style.display = "none";
     turno_jugador.textContent = "Turno O";
     ganador = 0;
-    turno = false;
     turno_jugador.style.fontSize = "1em";
     turno_jugador.style.color = "#7F8793";
+    partidas.remove();
     var i;
     for(i = 0; circulos.length; i++){
         circulos[i].style.animation = "none";
@@ -89,23 +183,23 @@ function init() {
     }
 }
 
-function dibujar(celda) {
+function dibujar(celda, turno) {
 
-    if (turno === false && casillero[celda] === 0 && ganador === 0) {
+    if (turno === 1 && casillero[celda] === 0 && ganador === 0) {
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
-        turno = true;
         turno_jugador.textContent = "Turno X";
         casillero[celda] = 1;
+        guardarMovimiento(1,celda);
         partidaGanada();
     }
-    else if (casillero[celda] === 0 && ganador === 0) {
+    else if (turno=== 2 && casillero[celda] === 0 && ganador === 0) {
         cruzsvg[celda].style.display = "block";
         cruzA[celda].style.animation = "0.5s stroke 1 forwards";
         cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
-        turno = false;
         turno_jugador.textContent = "Turno O";
         casillero[celda] = 2;
+        guardarMovimiento(2,celda);
         partidaGanada();
     }
 }
