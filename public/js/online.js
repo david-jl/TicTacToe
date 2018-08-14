@@ -48,65 +48,39 @@ var cruz6svg = document.getElementById("cruz6svg");
 var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
-
-/*const auth = firebase.auth();
-$(document).ready(function() {
-    auth.signInAnonymously();
-});
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        console.log(user.uid.substring(0,5));
-    }
-});*/
-
-
-var partidas = firebase.database().ref('partidas/');
-function guardarMovimiento(turno, casilla){
-    var nuevaPartida = partidas.push();
-    nuevaPartida.set({
-        turno: turno,
-        casilla:casilla
-    });
-}
-partidas.on('value', function(snapshot) {
-    snapshot.forEach(function (childSnapshot) {
-        var casilla = childSnapshot.val().casilla;
-        var turno = childSnapshot.val().turno;
-        console.log("casilla: " + casilla + " y turno: " + turno);
-        dibujar(casilla, turno);
-    });
-});
+var turno = 0;
+var ruta_partida;
+var turno_global = 1;
 
 var $crearPartida = $("#crearPartida");
 var $unirsePartida = $("#unirsePartida");
 var $loby = $(".loby");
 
-function guardarMovimiento(turno, casilla){
-    var nuevaPartida = partidas.push();
-    nuevaPartida.set({
-        turno: turno,
-        casilla:casilla
-    });
-}
-
 $crearPartida.on("click", function () {
     $unirsePartida.css("display", "none");
     $crearPartida.css("display", "none");
     var partida = firebase.database().ref('partidas/').push();
+    ruta_partida = partida;
     var id = partida.key;
     $loby.append("<p id='bbdd'></p>");
     $("#bbdd").text(id);
     partida.set({
         jugador: 1
     });
-});
-
-partidas.on('value', function(snapshot) {
-    snapshot.forEach(function (childSnapshot) {
-        var casilla = childSnapshot.val().casilla;
-        var turno = childSnapshot.val().turno;
-        console.log("casilla: " + casilla + " y turno: " + turno);
-        dibujar(casilla, turno);
+    partida.on("value", function (snapshot) {
+        var jugadores = snapshot.val().jugadores;
+        if(jugadores === 2 && turno === 0){
+            empiezaPartida();
+            turno = 1;
+        }
+    });
+    ruta_partida.on("value", function (snapshot) {
+        turno_global = snapshot.val().turno_global;
+        snapshot.forEach(function (childSnapshot) {
+            let casilla = childSnapshot.val().casilla;
+            let turno_jugada = childSnapshot.val().turno;
+            dibujar_BBDD(casilla, turno_jugada);
+        });
     });
 });
 
@@ -115,32 +89,52 @@ Desaparecen los dos botones anteriores
 Al clickear en el boton enviar mira lo que hay en el input y busca la ruta en la base de datos
 Si existe, pone a 2 el numero de jugadores y empieza la partida
  */
+
 $unirsePartida.on("click", function () {
     $unirsePartida.css("display", "none");
     $crearPartida.css("display", "none");
     $loby.append("<input type='text' name='texto1'/>" +
         "<button type='submit' id='enviar'>Enviar</button>");
     $("#enviar").on("click", function () {
-        var texto =document.getElementsByName("texto1")[0].value;
-        firebase.database().ref('partidas/' + texto).on("value", function (snapshot) {
-            if(snapshot.exists()){
-                firebase.database().ref('partidas/' + texto).set({jugador: 2});
-                empiezaPartida(2);
-            } else {
+        ruta =document.getElementsByName("texto1")[0].value;
+        ruta_partida = firebase.database().ref('partidas/' + ruta);
+        ruta_partida.on("value", function (snapshot) {
+            if(snapshot.exists() && turno === 0){
+                console.log("unirsePartida");
+                ruta_partida.set({jugadores: 2});
+                turno = 2;
+                empiezaPartida();
+            } else if(turno!== 2){
                 //TODO: poner algo para que quede bonito de error
                 console.log("Error");
             }
+            turno_global = snapshot.val().turno_global;
+            snapshot.forEach(function (childSnapshot) {
+                let casilla = childSnapshot.val().casilla;
+                let turno_jugada = childSnapshot.val().turno;
+                dibujar_BBDD(casilla, turno_jugada);
+            });
         })
     });
 });
 
-
-function empiezaPartida(turno) {
+function empiezaPartida() {
     $loby.css("display", "none");
     $("main").css("display", "inline-flex");
+    console.log("empiezaPartida");
+    ruta_partida.set({turno_global : 1});
 }
 
-
+function guardarMovimiento(casilla, turnoGlobal){
+    ruta_partida.update({
+        turno_global: turnoGlobal
+    });
+    var nuevoMovimineto = ruta_partida.push();
+    nuevoMovimineto.set({
+        turno: turno,
+        casilla:casilla
+    });
+}
 
 var casillero = [
     0,0,0,
@@ -154,8 +148,7 @@ var cirsvg = [cir1svg, cir2svg, cir3svg, cir4svg, cir5svg, cir6svg, cir7svg, cir
 var cruzsvg = [cruz1svg, cruz2svg, cruz3svg, cruz4svg, cruz5svg, cruz6svg, cruz7svg, cruz8svg, cruz9svg];
 
 $("#volver").on("click", function () {
-    partidas.remove();
-    auth.signOut();
+    ruta_partida.remove();
     location.href = "../index.html";
 });
 var ganador = 0;
@@ -172,7 +165,6 @@ function init() {
     ganador = 0;
     turno_jugador.style.fontSize = "1em";
     turno_jugador.style.color = "#7F8793";
-    partidas.remove();
     var i;
     for(i = 0; circulos.length; i++){
         circulos[i].style.animation = "none";
@@ -183,23 +175,44 @@ function init() {
     }
 }
 
-function dibujar(celda, turno) {
-
-    if (turno === 1 && casillero[celda] === 0 && ganador === 0) {
+function dibujar(celda) {
+    if (1 === turno_global && turno === 1 && casillero[celda] === 0 && ganador === 0) {
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
-        turno_jugador.textContent = "Turno X";
+        turno_jugador.textContent = "Espere su turno";
         casillero[celda] = 1;
-        guardarMovimiento(1,celda);
+        guardarMovimiento(celda, 2);
         partidaGanada();
     }
-    else if (turno=== 2 && casillero[celda] === 0 && ganador === 0) {
+    else if (2 === turno_global && turno === 2 && casillero[celda] === 0 && ganador === 0) {
         cruzsvg[celda].style.display = "block";
         cruzA[celda].style.animation = "0.5s stroke 1 forwards";
         cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
-        turno_jugador.textContent = "Turno O";
+        turno_jugador.textContent = "Espere su turno";
         casillero[celda] = 2;
-        guardarMovimiento(2,celda);
+        guardarMovimiento(celda, 1);
+        partidaGanada();
+    }
+}
+
+function dibujar_BBDD(celda, turno_bbdd) {
+
+    if (turno_bbdd === 1 && casillero[celda] === 0 && ganador === 0) {
+        cirsvg[celda].style.display = "block";
+        circulos[celda].style.animation = "1s trazar 1 forwards";
+        turno_jugador.textContent = "Su turno";
+        casillero[celda] = 1;
+        turno_global = 2;
+        console.log(turno_global);
+        partidaGanada();
+    }
+    else if (turno_bbdd === 2 && casillero[celda] === 0 && ganador === 0) {
+        cruzsvg[celda].style.display = "block";
+        cruzA[celda].style.animation = "0.5s stroke 1 forwards";
+        cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
+        turno_jugador.textContent = "Su turno";
+        casillero[celda] = 2;
+        turno_global = 1;
         partidaGanada();
     }
 }
@@ -275,6 +288,7 @@ function partidaGanada() {
         casillero[7] !== 0 && casillero[8] !== 0)
         ganador = -1;
 
+    //TODO: Mensaje de "Has ganado" o "Has perdido"
     if (ganador > 0) {
         turno_jugador.textContent = "Ha ganado el jugador " + ganador;
         turno_jugador.style.fontSize = "2em";
