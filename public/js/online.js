@@ -1,4 +1,3 @@
-var reiniciar = document.getElementById("reiniciar");
 var turno_jugador = document.getElementById("turno_jugador");
 var circulo1 = document.getElementById("circulo1");
 var circulo2 = document.getElementById("circulo2");
@@ -48,6 +47,7 @@ var cruz6svg = document.getElementById("cruz6svg");
 var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
+var $reiniciar = $("#reiniciar");
 var turno = 0;
 var ruta_partida;
 var turno_global = 1;
@@ -152,16 +152,34 @@ $("#volver").on("click", function () {
     location.href = "../index.html";
 });
 var ganador = 0;
-reiniciar.style.display = "none";
+$reiniciar.css("display", "none");
 
-function init() {
+$reiniciar.on("click", function () {
+    turno_global = 0;
+    if(turno === 1) {
+        turno_jugador.textContent = "Espere a que el rival reinicie";
+        ruta_partida.on("value", function (snapshot) {
+            jugadores = snapshot.val().jugadores;
+            if(jugadores === 2) {
+                ruta_partida.remove();
+                ruta_partida.set({turno_global: 1});
+                turno_jugador.textContent = "Su turno";
+            }
+        });
+
+    }else {
+        ruta_partida.remove();
+        turno_jugador.textContent = "Espere su turno";
+        ruta_partida.set({jugadores: 2});
+
+    }
     casillero = [
         0,0,0,
         0,0,0,
         0,0,0,
     ];
     reiniciar.style.display = "none";
-    turno_jugador.textContent = "Turno O";
+
     ganador = 0;
     turno_jugador.style.fontSize = "1em";
     turno_jugador.style.color = "#7F8793";
@@ -173,7 +191,7 @@ function init() {
         cruzsvg[i].style.display = "none";
         cirsvg[i].style.display = "none";
     }
-}
+});
 
 function dibujar(celda) {
     if (1 === turno_global && turno === 1 && casillero[celda] === 0 && ganador === 0) {
@@ -294,13 +312,11 @@ function partidaGanada() {
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
-        reiniciar.onclick = init;
     } else if (ganador === -1) {
         turno_jugador.textContent = "Empate";
         turno_jugador.style.fontSize = "2em";
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
-        reiniciar.onclick = init;
     }
 }
 
