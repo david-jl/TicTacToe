@@ -59,29 +59,42 @@ var $loby = $(".loby");
 $crearPartida.on("click", function () {
     $unirsePartida.css("display", "none");
     $crearPartida.css("display", "none");
-    var partida = firebase.database().ref('partidas/').push();
-    ruta_partida = partida;
-    var id = partida.key;
-    $loby.append("<p id='bbdd'></p>");
-    $("#bbdd").text(id);
-    partida.set({
-        jugador: 1
-    });
-    partida.on("value", function (snapshot) {
-        var jugadores = snapshot.val().jugadores;
-        if(jugadores === 2 && turno === 0){
-            empiezaPartida();
-            turno = 1;
+    $loby.append("<input minlength='3' type='text' name='crear_partida'/>" +
+        "<button type='submit' id='crearId'>Crear partida</button>");
+
+    //TODO: corta o largo salga debajo del input
+    $("#crearId").on("click", function () {
+        let ruta =document.getElementsByName("crear_partida")[0].value;
+        if(ruta.length<3)
+            $loby.append("Clave demasiado corta. Introduce mas de 3 caracteres");
+        else if(ruta.length>10)
+            $loby.append("Clave demasiado larga. Introduce menos de 10 caracteres");
+
+        else {
+            ruta_partida = firebase.database().ref("partidas/" + ruta);
+            $loby.html("Segundo jugador, ingrese: <strong>&nbsp&#34" + ruta + "&#34</strong>");
+            ruta_partida.set({
+                jugador: 1
+            });
+            ruta_partida.on("value", function (snapshot) {
+                var jugadores = snapshot.val().jugadores;
+                if (jugadores === 2 && turno === 0) {
+                    empiezaPartida();
+                    turno = 1;
+                }
+            });
+            ruta_partida.on("value", function (snapshot) {
+                turno_global = snapshot.val().turno_global;
+                snapshot.forEach(function (childSnapshot) {
+                    let casilla = childSnapshot.val().casilla;
+                    let turno_jugada = childSnapshot.val().turno;
+                    dibujar_BBDD(casilla, turno_jugada);
+                });
+            });
         }
     });
-    ruta_partida.on("value", function (snapshot) {
-        turno_global = snapshot.val().turno_global;
-        snapshot.forEach(function (childSnapshot) {
-            let casilla = childSnapshot.val().casilla;
-            let turno_jugada = childSnapshot.val().turno;
-            dibujar_BBDD(casilla, turno_jugada);
-        });
-    });
+
+
 });
 
 /*Boton unirse partida
@@ -96,7 +109,7 @@ $unirsePartida.on("click", function () {
     $loby.append("<input type='text' name='texto1'/>" +
         "<button type='submit' id='enviar'>Enviar</button>");
     $("#enviar").on("click", function () {
-        ruta =document.getElementsByName("texto1")[0].value;
+        let ruta =document.getElementsByName("texto1")[0].value;
         ruta_partida = firebase.database().ref('partidas/' + ruta);
         ruta_partida.on("value", function (snapshot) {
             if(snapshot.exists() && turno === 0){
