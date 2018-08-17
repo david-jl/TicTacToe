@@ -8,23 +8,67 @@ var ganador = 0;
 var turno_global = 1;
 
 
-/*exports.empezarPartida = functions.database.ref('/partidas/{partidaId}')
+exports.empezarPartida = functions.database.ref('/partidas/{partidaId}')
     .onCreate((snapshot) => {
         var jugadores = snapshot.val().jugadores;
-        return snapshot.ref.parent.child('uppercase').set(4);
-    });*/
-
-
-
-exports.partida = functions.database.ref('/partidas/{partidaId}')
-    .onCreate((snapshot) => {
-        const datos = {
-            turno_global: 1,
-            casillero: casillero
+        console.log(jugadores);
+        if(jugadores!==0) {
+            const datos = {
+                turno_global: 1,
+                casillero: casillero
+            };
+            return snapshot.ref.child('datos').set(datos);
+        } else {
+            return;
         }
-        return snapshot.ref.child('ganador').set(datos);
     });
 
+
+
+/*exports.partida = functions.database.ref('/partidas/{partidaId}')
+    .onCreate((snapshot) => {
+        var jugadores = snapshot.val().jugadores;
+        console.log(jugadores);
+        if(jugadores!==0) {
+            const datos = {
+                turno_global: 1,
+                casillero: casillero
+            };
+            return snapshot.ref.child('datos').set(datos);
+        } else {
+            return;
+        }
+    });*/
+
+exports.provisional = functions.database.ref('/partidas/{partidaId}/datos')
+    .onCreate((snapshot) => {
+        const provisional = {
+            turno_provisional:0,
+            casilla_provisional: 0
+        };
+        console.log(provisional);
+        return snapshot.ref.parent.child('provisional').set(provisional);
+    });
+exports.movimiento = functions.database.ref('/partidas/{partidaId}/provisional')
+    .onUpdate((snapshot) => {
+        var movimiento_valido = false;
+        let casilla_provisional = snapshot.after.val().casilla_provisional;
+        let turno_provisional = snapshot.after.val().turno_provisional;
+        if(turno_provisional === turno_global && casillero[casilla_provisional] === 0 && ganador === 0)
+            movimiento_valido = true;
+
+        console.log(movimiento_valido);
+        if(movimiento_valido){
+            casillero[casilla_provisional] = turno_provisional;
+            const datos = {
+                turno_global: 1,
+                casillero: casillero
+            }
+            return snapshot.after.ref.parent.child('datos').set(datos);
+        } else {
+            return
+        }
+    });
 /*exports.jugada_provisional = functions.database.ref('/partidas/{partidaId}/{dibujarId}')
     .onCreate((snapshot) => {
         var casilla = snapshot.val().casilla_provisional;

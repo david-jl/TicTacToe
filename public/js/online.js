@@ -50,6 +50,7 @@ var cruz9svg = document.getElementById("cruz9svg");
 var $reiniciar = $("#reiniciar");
 var turno = 0;
 var ruta_partida;
+var ruta;
 var turno_global = 1;
 
 var $crearPartida = $("#crearPartida");
@@ -66,7 +67,7 @@ $crearPartida.on("click", function () {
     //TODO: corta o largo salga debajo del input
     $("#crearId").on("click", function () {
 
-        let ruta =document.getElementsByName("crear_partida")[0].value;
+        ruta =document.getElementsByName("crear_partida")[0].value;
         if(ruta.length<3)
             $loby.append("Clave demasiado corta. Introduce mas de 3 caracteres");
         else if(ruta.length>10)
@@ -110,12 +111,15 @@ $unirsePartida.on("click", function () {
     $loby.append("<input type='text' name='texto1'/>" +
         "<button type='submit' id='enviar'>Enviar</button>");
     $("#enviar").on("click", function () {
-        let ruta =document.getElementsByName("texto1")[0].value;
+        ruta =document.getElementsByName("texto1")[0].value;
         ruta_partida = firebase.database().ref('partidas/' + ruta);
         ruta_partida.on("value", function (snapshot) {
             if(snapshot.exists() && turno === 0){
                 console.log("unirsePartida");
-                ruta_partida.set({jugadores: 2});
+                let jugadores = snapshot.val().jugadores;
+                if(jugadores === 1)
+                    ruta_partida.update({jugadores:2});
+                console.log(jugadores);
                 turno = 2;
                 empiezaPartida();
             } else if(turno!== 2){
@@ -208,8 +212,9 @@ $reiniciar.on("click", function () {
 
 
 function setCasilla (celda){
-    var nuevoMovimiento = ruta_partida.push();
-    nuevoMovimiento.set({
+    firebase.database().ref('partidas/' + ruta);
+    let provisional = firebase.database().ref('partidas/' + ruta + '/provisional');
+    provisional.set({
         turno_provisional: turno,
         casilla_provisional: celda
     });
