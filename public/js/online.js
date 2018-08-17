@@ -57,6 +57,7 @@ var $unirsePartida = $("#unirsePartida");
 var $loby = $(".loby");
 
 $crearPartida.on("click", function () {
+
     $unirsePartida.css("display", "none");
     $crearPartida.css("display", "none");
     $loby.append("<input minlength='3' type='text' name='crear_partida'/>" +
@@ -64,17 +65,17 @@ $crearPartida.on("click", function () {
 
     //TODO: corta o largo salga debajo del input
     $("#crearId").on("click", function () {
+
         let ruta =document.getElementsByName("crear_partida")[0].value;
         if(ruta.length<3)
             $loby.append("Clave demasiado corta. Introduce mas de 3 caracteres");
         else if(ruta.length>10)
             $loby.append("Clave demasiado larga. Introduce menos de 10 caracteres");
-
         else {
             ruta_partida = firebase.database().ref("partidas/" + ruta);
             $loby.html("Segundo jugador, ingrese: <strong>&nbsp&#34" + ruta + "&#34</strong>");
             ruta_partida.set({
-                jugador: 1
+                jugadores: 1
             });
             ruta_partida.on("value", function (snapshot) {
                 var jugadores = snapshot.val().jugadores;
@@ -123,9 +124,9 @@ $unirsePartida.on("click", function () {
             }
             turno_global = snapshot.val().turno_global;
             snapshot.forEach(function (childSnapshot) {
-                let casilla = childSnapshot.val().casilla;
-                let turno_jugada = childSnapshot.val().turno;
-                dibujar_BBDD(casilla, turno_jugada);
+                    let casilla = childSnapshot.val().casilla;
+                    let turno_jugada = childSnapshot.val().turno;
+                    dibujar_BBDD(casilla, turno_jugada);
             });
         })
     });
@@ -135,10 +136,9 @@ function empiezaPartida() {
     $loby.css("display", "none");
     $("main").css("display", "inline-flex");
     console.log("empiezaPartida");
-    ruta_partida.set({turno_global : 1});
 }
 
-function guardarMovimiento(casilla, turnoGlobal){
+/*function guardarMovimiento(casilla, turnoGlobal){
     ruta_partida.update({
         turno_global: turnoGlobal
     });
@@ -147,7 +147,7 @@ function guardarMovimiento(casilla, turnoGlobal){
         turno: turno,
         casilla:casilla
     });
-}
+}*/
 
 var casillero = [
     0,0,0,
@@ -172,7 +172,7 @@ $reiniciar.on("click", function () {
     if(turno === 1) {
         turno_jugador.textContent = "Espere a que el rival reinicie";
         ruta_partida.on("value", function (snapshot) {
-            jugadores = snapshot.val().jugadores;
+            let jugadores = snapshot.val().jugadores;
             if(jugadores === 2) {
                 ruta_partida.remove();
                 ruta_partida.set({turno_global: 1});
@@ -206,13 +206,21 @@ $reiniciar.on("click", function () {
     }
 });
 
+
+function setCasilla (celda){
+    var nuevoMovimiento = ruta_partida.push();
+    nuevoMovimiento.set({
+        turno_provisional: turno,
+        casilla_provisional: celda
+    });
+}
+
 function dibujar(celda) {
     if (1 === turno_global && turno === 1 && casillero[celda] === 0 && ganador === 0) {
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno_jugador.textContent = "Espere su turno";
         casillero[celda] = 1;
-        guardarMovimiento(celda, 2);
         partidaGanada();
     }
     else if (2 === turno_global && turno === 2 && casillero[celda] === 0 && ganador === 0) {
@@ -221,7 +229,6 @@ function dibujar(celda) {
         cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
         turno_jugador.textContent = "Espere su turno";
         casillero[celda] = 2;
-        guardarMovimiento(celda, 1);
         partidaGanada();
     }
 }
@@ -249,7 +256,7 @@ function dibujar_BBDD(celda, turno_bbdd) {
 }
 
 
-function partidaGanada() {
+/*function partidaGanada() {
     if (casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 1) {
         ganador = 1;
         animacion_ganador(0, 1, 2, 1);
@@ -331,10 +338,10 @@ function partidaGanada() {
         turno_jugador.style.color = "#000000";
         reiniciar.style.display = "block";
     }
-}
+}*/
 
 
-function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
+/*function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
     if (ganador === 1) {
         circulos[casillero1].style.strokeWidth = "3px";
         circulos[casillero2].style.strokeWidth = "3px";
@@ -350,4 +357,4 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
         cruzA[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
         cruzB[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
     }
-}
+}*/

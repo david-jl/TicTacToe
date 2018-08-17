@@ -4,12 +4,10 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      "gulpfile.js",
-      "package.json",
-      "package-lock.json",
-      "app/**",
-      "README.rd"
+      "**/node_modules/**"
     ]
+  },
+  "database": {
+    "rules": "database.rules.json"
   }
 }
