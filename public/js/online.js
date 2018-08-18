@@ -50,110 +50,120 @@ var cruz9svg = document.getElementById("cruz9svg");
 var $reiniciar = $("#reiniciar");
 var turno = 0;
 var ruta_partida;
+var ruta_provisional;
 var ruta;
-var turno_global = 1;
-
 var $crearPartida = $("#crearPartida");
 var $unirsePartida = $("#unirsePartida");
 var $loby = $(".loby");
+var $input = $(".input");
+var $submit= $("#submit");
+var turno_global;
 
 $crearPartida.on("click", function () {
+    $loby.css("display", "none");
+    $submit.attr("id","submitCrear");
+    $input.css("display", "flex");
+});
+$unirsePartida.on("click", function () {
+    $submit.attr("id","submitUnirse");
+    $submit.text("Unirse");
+    $loby.css("display", "none");
+    $input.css("display", "flex");
+});
 
-    $unirsePartida.css("display", "none");
-    $crearPartida.css("display", "none");
-    $loby.append("<input minlength='3' type='text' name='crear_partida'/>" +
-        "<button type='submit' id='crearId'>Crear partida</button>");
+$submit.on("click", function () {
+    var accion = $submit.attr("id");
+    if(accion === "submitUnirse"){
+        submitUnirse();
+    } else if(accion === "submitCrear"){
+        submitCrear();
+    }
+});
 
-    //TODO: corta o largo salga debajo del input
-    $("#crearId").on("click", function () {
-
-        ruta =document.getElementsByName("crear_partida")[0].value;
-        if(ruta.length<3)
-            $loby.append("Clave demasiado corta. Introduce mas de 3 caracteres");
-        else if(ruta.length>10)
-            $loby.append("Clave demasiado larga. Introduce menos de 10 caracteres");
-        else {
-            ruta_partida = firebase.database().ref("partidas/" + ruta);
-            $loby.html("Segundo jugador, ingrese: <strong>&nbsp&#34" + ruta + "&#34</strong>");
-            ruta_partida.set({
-                jugadores: 1
-            });
-            ruta_partida.on("value", function (snapshot) {
-                var jugadores = snapshot.val().jugadores;
-                if (jugadores === 2 && turno === 0) {
-                    empiezaPartida();
-                    turno = 1;
-                }
-            });
-            ruta_partida.on("value", function (snapshot) {
-                turno_global = snapshot.val().turno_global;
-                snapshot.forEach(function (childSnapshot) {
-                    let casilla = childSnapshot.val().casilla;
-                    let turno_jugada = childSnapshot.val().turno;
-                    dibujar_BBDD(casilla, turno_jugada);
-                });
-            });
+function submitCrear() {
+    console.log("submitUnirse funcion");
+    ruta = document.getElementsByName("crear_partida")[0].value;
+    if (ruta.length < 3)
+        $input.append("Clave demasiado corta. Introduce mas de 3 caracteres");
+    else if (ruta.length > 10)
+        $input.append("Clave demasiado larga. Introduce menos de 10 caracteres");
+    else {
+        ruta_partida = firebase.database().ref("partidas/" + ruta);
+        $input.html("Segundo jugador, ingrese: <strong>&nbsp&#34" + ruta + "&#34</strong>");
+        ruta_partida.set({
+            jugadores: 1
+        });
+    }
+    ruta_provisional = firebase.database().ref("partidas/" + ruta);
+    ruta_provisional.on("value", function (snapshot) {
+        console.log("jugadores " + snapshot.val().jugadores);
+        if(snapshot.exists() && snapshot.val().jugadores===2) {
+            $input.css("display", "none");
+            empiezaPartida();
         }
     });
-
-
-});
-
-/*Boton unirse partida
-Desaparecen los dos botones anteriores
-Al clickear en el boton enviar mira lo que hay en el input y busca la ruta en la base de datos
-Si existe, pone a 2 el numero de jugadores y empieza la partida
- */
-
-$unirsePartida.on("click", function () {
-    $unirsePartida.css("display", "none");
-    $crearPartida.css("display", "none");
-    $loby.append("<input type='text' name='texto1'/>" +
-        "<button type='submit' id='enviar'>Enviar</button>");
-    $("#enviar").on("click", function () {
-        ruta =document.getElementsByName("texto1")[0].value;
-        ruta_partida = firebase.database().ref('partidas/' + ruta);
-        ruta_partida.on("value", function (snapshot) {
-            if(snapshot.exists() && turno === 0){
-                console.log("unirsePartida");
-                let jugadores = snapshot.val().jugadores;
-                if(jugadores === 1)
-                    ruta_partida.update({jugadores:2});
-                console.log(jugadores);
-                turno = 2;
-                empiezaPartida();
-            } else if(turno!== 2){
-                //TODO: poner algo para que quede bonito de error
-                console.log("Error");
-            }
+    let ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
+    console.log(ruta_datos)
+    ruta_datos.on("value", function (snapshot) {
+        if(snapshot.exists()) {
+            console.log("dibujar_crear");
+            turno = 1;
+            let casillero_nuevo = snapshot.val().casillero;
+            let ganador = snapshot.val().ganador;
             turno_global = snapshot.val().turno_global;
-            snapshot.forEach(function (childSnapshot) {
-                    let casilla = childSnapshot.val().casilla;
-                    let turno_jugada = childSnapshot.val().turno;
-                    dibujar_BBDD(casilla, turno_jugada);
-            });
-        })
+            console.log(casillero_nuevo !== null);
+            console.log(casillero_nuevo);
+            if(casillero_nuevo!==null) {
+                console.log(casillero_viejo);
+                dibujar(casillero_nuevo, ganador);
+            }
+        }
     });
-});
+}
+
+function submitUnirse() {
+    ruta = document.getElementsByName("crear_partida")[0].value;
+    ruta_partida = firebase.database().ref("partidas/" + ruta);
+    ruta_partida.on("value", function (snapshot) {
+        if (snapshot.exists() && turno === 0) {
+            console.log("unirsePartida");
+            let jugadores = snapshot.val().jugadores;
+            if (jugadores === 1)
+                ruta_partida.update({jugadores: 2});
+            console.log(jugadores);
+            $input.css("display", "none");
+            empiezaPartida();
+            turno = 2;
+        } else if (!snapshot.exists()) {
+            //TODO: poner algo para que quede bonito de error
+            console.log("Error");
+        }
+    });
+    let ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
+    console.log(ruta_datos)
+    ruta_datos.on("value", function (snapshot) {
+        if(snapshot.exists()) {
+            console.log("dibujar_crear");
+            let casillero_nuevo = snapshot.val().casillero;
+            let ganador = snapshot.val().ganador;
+            turno_global = snapshot.val().turno_global;
+            console.log(casillero_nuevo !== null);
+            console.log(casillero_nuevo);
+            if(casillero_nuevo!==null) {
+                console.log(casillero_viejo);
+                dibujar(casillero_nuevo, ganador);
+            }
+        }
+    });
+}
 
 function empiezaPartida() {
-    $loby.css("display", "none");
+    $input.css("display", "none");
     $("main").css("display", "inline-flex");
     console.log("empiezaPartida");
 }
 
-/*function guardarMovimiento(casilla, turnoGlobal){
-    ruta_partida.update({
-        turno_global: turnoGlobal
-    });
-    var nuevoMovimineto = ruta_partida.push();
-    nuevoMovimineto.set({
-        turno: turno,
-        casilla:casilla
-    });
-}*/
-
-var casillero = [
+var casillero_viejo = [
     0,0,0,
     0,0,0,
     0,0,0,
@@ -220,117 +230,40 @@ function setCasilla (celda){
     });
 }
 
-function dibujar(celda) {
-    if (1 === turno_global && turno === 1 && casillero[celda] === 0 && ganador === 0) {
-        cirsvg[celda].style.display = "block";
-        circulos[celda].style.animation = "1s trazar 1 forwards";
-        turno_jugador.textContent = "Espere su turno";
-        casillero[celda] = 1;
-        partidaGanada();
+function dibujar(casillero_nuevo, ganador) {
+
+    var salir = false;
+    console.log("dibujar");
+    for (var i = 0; i<casillero_nuevo.length && !salir; i++) {
+        if (casillero_nuevo[i] !== casillero_viejo[i]) {
+            salir = true;
+            casillero_nuevo[i] === 1 ? dibujar_circulo(i) : dibujar_cruz(i);
+            casillero_viejo = casillero_nuevo;
+            if(ganador!==0){
+                console.log("dibujar partidaGanada");
+                partidaGanada(casillero_nuevo, ganador);
+            }
+        }
     }
-    else if (2 === turno_global && turno === 2 && casillero[celda] === 0 && ganador === 0) {
-        cruzsvg[celda].style.display = "block";
-        cruzA[celda].style.animation = "0.5s stroke 1 forwards";
-        cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
-        turno_jugador.textContent = "Espere su turno";
-        casillero[celda] = 2;
-        partidaGanada();
-    }
+    console.log("turno " + turno + " turno global " + turno_global);
+    if(turno_global===turno)
+        turno_jugador.textContent = "Tu turno";
+    else
+        turno_jugador.textContent = "Turno del rival";
+}
+function dibujar_circulo(celda) {
+    console.log("dibujar_circulo");
+    cirsvg[celda].style.display = "block";
+    circulos[celda].style.animation = "1s trazar 1 forwards";
+}
+function dibujar_cruz(celda) {
+    console.log("dibujar_cruz");
+    cruzsvg[celda].style.display = "block";
+    cruzA[celda].style.animation = "0.5s stroke 1 forwards";
+    cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
 }
 
-function dibujar_BBDD(celda, turno_bbdd) {
-
-    if (turno_bbdd === 1 && casillero[celda] === 0 && ganador === 0) {
-        cirsvg[celda].style.display = "block";
-        circulos[celda].style.animation = "1s trazar 1 forwards";
-        turno_jugador.textContent = "Su turno";
-        casillero[celda] = 1;
-        turno_global = 2;
-        console.log(turno_global);
-        partidaGanada();
-    }
-    else if (turno_bbdd === 2 && casillero[celda] === 0 && ganador === 0) {
-        cruzsvg[celda].style.display = "block";
-        cruzA[celda].style.animation = "0.5s stroke 1 forwards";
-        cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
-        turno_jugador.textContent = "Su turno";
-        casillero[celda] = 2;
-        turno_global = 1;
-        partidaGanada();
-    }
-}
-
-
-/*function partidaGanada() {
-    if (casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 1, 2, 1);
-    }
-    else if (casillero[0] === 2 && casillero[1] === 2 && casillero[2] === 2){
-        ganador = 2;
-        animacion_ganador(0,1,2,2);
-    }
-    else if (casillero[3] === 1 && casillero[4] === 1 && casillero[5] === 1) {
-        ganador = 1;
-        animacion_ganador(3, 4, 5, 1);
-    }
-    else if (casillero[3] === 2 && casillero[4] === 2 && casillero[5] === 2) {
-        ganador = 2;
-        animacion_ganador(3, 4, 5, 2);
-    }
-    else if (casillero[6] === 1 && casillero[7] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(6, 7, 8, 1);
-    }
-    else if (casillero[6] === 2 && casillero[7] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(6, 7, 8, 2);
-    }
-    else if (casillero[0] === 1 && casillero[3] === 1 && casillero[6] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 3, 6, 1);
-    }
-    else if (casillero[0] === 2 && casillero[3] === 2 && casillero[6] === 2) {
-        ganador = 2;
-        animacion_ganador(0, 3, 6, 2);
-    }
-    else if (casillero[1] === 1 && casillero[4] === 1 && casillero[7] === 1) {
-        ganador = 1;
-        animacion_ganador(1, 4, 7, 1);
-    }
-    else if (casillero[1] === 2 && casillero[4] === 2 && casillero[7] === 2) {
-        ganador = 2;
-        animacion_ganador(1, 4, 7, 2);
-    }
-    else if (casillero[2] === 1 && casillero[5] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(2, 5, 8, 1);
-    }
-    else if (casillero[2] === 2 && casillero[5] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(2, 5, 8, 2);
-    }
-    else if (casillero[0] === 1 && casillero[4] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 4, 8, 1);
-    }
-    else if (casillero[0] === 2 && casillero[4] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(0, 4, 8, 2);
-    }
-    else if (casillero[2] === 1 && casillero[4] === 1 && casillero[6] === 1) {
-        ganador = 1;
-        animacion_ganador(2, 4, 6, 1);
-    }
-    else if (casillero[2] === 2 && casillero[4] === 2 && casillero[6] === 2) {
-        ganador = 2;
-        animacion_ganador(2, 4, 6, 2);
-    }
-    else if (casillero[0] !== 0 && casillero[1] !== 0 && casillero[2] !== 0 && casillero[3] !== 0 &&
-        casillero[4] !== 0 && casillero[5] !== 0 && casillero[6] !== 0 &&
-        casillero[7] !== 0 && casillero[8] !== 0)
-        ganador = -1;
-
+/*
     //TODO: Mensaje de "Has ganado" o "Has perdido"
     if (ganador > 0) {
         turno_jugador.textContent = "Ha ganado el jugador " + ganador;
@@ -346,7 +279,9 @@ function dibujar_BBDD(celda, turno_bbdd) {
 }*/
 
 
-/*function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
+function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
+    console.log("animacion partidaGanada");
+
     if (ganador === 1) {
         circulos[casillero1].style.strokeWidth = "3px";
         circulos[casillero2].style.strokeWidth = "3px";
@@ -362,4 +297,29 @@ function dibujar_BBDD(celda, turno_bbdd) {
         cruzA[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
         cruzB[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
     }
-}*/
+}
+
+function partidaGanada(casillero, ganador){
+    //TODO: si hay empate
+    /*if(ganador===-1){
+        empate();
+    }*/
+    console.log("funcion partidaGanada");
+
+    if (casillero[0] === ganador && casillero[1] === ganador && casillero[2] === ganador)
+        animacion_ganador(0, 1, 2, ganador);
+    else if (casillero[3] === ganador && casillero[4] === ganador && casillero[5] === ganador)
+        animacion_ganador(3, 4, 5, ganador);
+    else if (casillero[6] === ganador && casillero[7] === ganador && casillero[8] === ganador)
+        animacion_ganador(6, 7, 8, ganador);
+    else if (casillero[0] === ganador && casillero[3] === ganador && casillero[6] === ganador)
+        animacion_ganador(0, 3, 6, ganador);
+    else if (casillero[1] === ganador && casillero[4] === ganador && casillero[7] === ganador)
+        animacion_ganador(1, 4, 7, ganador);
+    else if (casillero[2] === ganador && casillero[5] === ganador && casillero[8] === ganador)
+        animacion_ganador(2, 5, 8, ganador);
+    else if (casillero[0] === ganador && casillero[4] === ganador && casillero[8] === ganador)
+        animacion_ganador(0, 4, 8, ganador);
+    else if (casillero[2] === ganador && casillero[4] === ganador && casillero[6] === ganador)
+        animacion_ganador(2, 4, 6, ganador);
+}

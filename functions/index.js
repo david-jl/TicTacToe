@@ -3,42 +3,24 @@ const functions = require('firebase-functions');
 // // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-var casillero = [0,0,0,0,0,0,0,0,0];
-var ganador = 0;
-var turno_global = 1;
 
 
 exports.empezarPartida = functions.database.ref('/partidas/{partidaId}')
     .onCreate((snapshot) => {
         var jugadores = snapshot.val().jugadores;
+        let casillero = [0,0,0,0,0,0,0,0,0];
         console.log(jugadores);
         if(jugadores!==0) {
             const datos = {
                 turno_global: 1,
-                casillero: casillero
+                casillero: casillero,
+                ganador: 0
             };
             return snapshot.ref.child('datos').set(datos);
         } else {
             return;
         }
     });
-
-
-
-/*exports.partida = functions.database.ref('/partidas/{partidaId}')
-    .onCreate((snapshot) => {
-        var jugadores = snapshot.val().jugadores;
-        console.log(jugadores);
-        if(jugadores!==0) {
-            const datos = {
-                turno_global: 1,
-                casillero: casillero
-            };
-            return snapshot.ref.child('datos').set(datos);
-        } else {
-            return;
-        }
-    });*/
 
 exports.provisional = functions.database.ref('/partidas/{partidaId}/datos')
     .onCreate((snapshot) => {
@@ -49,57 +31,43 @@ exports.provisional = functions.database.ref('/partidas/{partidaId}/datos')
         console.log(provisional);
         return snapshot.ref.parent.child('provisional').set(provisional);
     });
-exports.movimiento = functions.database.ref('/partidas/{partidaId}/provisional')
+
+exports.movimiento = functions.database.ref('/partidas/{partidaId}')
     .onUpdate((snapshot) => {
         var movimiento_valido = false;
-        let casilla_provisional = snapshot.after.val().casilla_provisional;
-        let turno_provisional = snapshot.after.val().turno_provisional;
-        if(turno_provisional === turno_global && casillero[casilla_provisional] === 0 && ganador === 0)
-            movimiento_valido = true;
+        let casilla_provisional = snapshot.after.child("provisional").val().casilla_provisional;
+        let turno_provisional = snapshot.after.child("provisional").val().turno_provisional;
+        let turno_global = snapshot.after.child("datos").val().turno_global;
+        let ganador = snapshot.after.child("datos").val().ganador;
+        let casillero = snapshot.after.child("datos").val().casillero;
 
-        console.log(movimiento_valido);
-        if(movimiento_valido){
+        console.log("Antes turno_global " + turno_global + " casillero " + casillero + " ganador " + ganador);
+        console.log("Antes casilla " + casilla_provisional + " turno " + turno_provisional );
+
+        if(turno_provisional === turno_global && casillero[casilla_provisional] === 0 && ganador === 0){
+            movimiento_valido = true;
+            turno_global = turno_global===1?2:1;
             casillero[casilla_provisional] = turno_provisional;
+            ganador = partidaGanada(casillero);
+        }
+        console.log(" turno_global " + turno_global + " casillero " + casillero);
+        console.log(" casilla " + casilla_provisional + " turno " + turno_provisional + " ganador " + ganador);
+        if(movimiento_valido) {
             const datos = {
-                turno_global: 1,
-                casillero: casillero
-            }
-            return snapshot.after.ref.parent.child('datos').set(datos);
+                turno_global: turno_global,
+                casillero: casillero,
+                ganador: ganador
+            };
+            return snapshot.after.ref.child('datos').set(datos);
         } else {
-            return
+            return null;
         }
     });
-/*exports.jugada_provisional = functions.database.ref('/partidas/{partidaId}/{dibujarId}')
-    .onCreate((snapshot) => {
-        var casilla = snapshot.val().casilla_provisional;
-        var turno = snapshot.val().turno_provisional;
-        console.log(" casillero " + casillero + " Casilla " + casilla  + " turno " + turno  + " turno global " + turno_global);
 
-        if(casillero[casilla] === 0)
-            casillero[casilla] = turno;
 
-        if (turno_global === 1 && turno === 1 && casillero[casilla] === 0 && ganador === 0) {
-            casillero[casilla] = 1;
-            console.log(casillero[casilla])
-            turno_global = 2;
-            //partidaGanada();
-        }
-        else if (turno_global === 2 && turno === 2 && casillero[casilla] === 0 && ganador === 0) {
-            casillero[casilla] = 2;
-            console.log(casillero[casilla])
-            turno_global = 1;
-            //partidaGanada();
-        }
-        const datos = {
-            work: 1,
-            si: 2
-        }
-        console.log(casilla);
-        return snapshot.ref.parent.child('ganador').set(datos);
-    });*/
+function partidaGanada(casillero){
 
-/*function partidaGanada(){
-
+let ganador = 0;
 
 if (casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 1) {
     ganador = 1;
@@ -154,5 +122,5 @@ else if (casillero[0] !== 0 && casillero[1] !== 0 && casillero[2] !== 0 && casil
     casillero[7] !== 0 && casillero[8] !== 0)
     ganador = -1;
 
-
-}*/
+return ganador;
+}

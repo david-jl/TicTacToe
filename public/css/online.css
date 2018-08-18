@@ -23,6 +23,10 @@ html, body{
     border-radius: 4px;
 }
 
+.input{
+    display: none;
+}
+
 
 main{
     display: none;
