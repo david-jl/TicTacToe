@@ -1,5 +1,3 @@
-var reiniciar = document.getElementById("reiniciar");
-var turno_jugador = document.getElementById("turno_jugador");
 var circulo1 = document.getElementById("circulo1");
 var circulo2 = document.getElementById("circulo2");
 var circulo3 = document.getElementById("circulo3");
@@ -48,7 +46,12 @@ var cruz6svg = document.getElementById("cruz6svg");
 var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
-
+var cuadro_visible = false;
+var $reiniciar = $("#reiniciar");
+var $cuadro = $(".cuadro_terminarPartida");
+var $main = $("main");
+var $partida = $("#partida");
+var $texto_ganador = $("#texto_ganador");
 
 var casillero = [
     0,0,0,
@@ -63,7 +66,6 @@ var cruzsvg = [cruz1svg, cruz2svg, cruz3svg, cruz4svg, cruz5svg, cruz6svg, cruz7
 
 var turno = false;
 var ganador = 0;
-reiniciar.style.display = "none";
 
 function init() {
     casillero = [
@@ -71,8 +73,7 @@ function init() {
         0,0,0,
         0,0,0,
     ];
-    reiniciar.style.display = "none";
-    turno_jugador.textContent = "";
+    $reiniciar.css("display", "none");
     ganador = 0;
     var i;
     for(i = 0; circulos.length; i++){
@@ -296,20 +297,32 @@ function partidaGanada() {
         ganador = -1;
 
     if (ganador > 0) {
-        if(ganador ===1)
-            turno_jugador.textContent = "Has ganado";
-        else if(ganador ===2)
-            turno_jugador.textContent = "Has perdido";
-        turno_jugador.style.fontSize = "2em";
-        turno_jugador.style.color = "#000000";
-        reiniciar.style.display = "block";
-        reiniciar.onclick = init;
+        setTimeout(function () {
+            $partida.css("visibility", "hidden");
+            $partida.css("display", "block");
+            $cuadro.css("position", "relative");
+            cuadro_visible = true;
+        },1500);
     } else if (ganador === -1) {
-        turno_jugador.textContent = "Empate";
-        turno_jugador.style.fontSize = "2em";
-        turno_jugador.style.color = "#000000";
-        reiniciar.style.display = "block";
-        reiniciar.onclick = init;
+        setTimeout(function () {
+            $partida.css("visibility", "hidden");
+            $cuadro.css("position", "relative");
+            $texto_ganador.text("Empate");
+            cuadro_visible = true;
+        },500);
+    }
+    if(ganador!== 0) {
+        $main.mouseup(function () {
+            $cuadro.css("visibility", "visible");
+            $partida.css("visibility", "hidden");
+        });
+        $main.mousedown(function () {
+            $cuadro.css("visibility", "hidden");
+            $partida.css("visibility", "visible");
+        });
+        $cuadro.mousedown(function (e) {
+            e.stopPropagation();
+        });
     }
 }
 
@@ -329,4 +342,6 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
         cruzA[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
         cruzB[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
     }
+
 }
+

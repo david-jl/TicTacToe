@@ -18,16 +18,19 @@
     <link rel="stylesheet" href="../css/online.css">
     <link rel="stylesheet" href="../css/main.css">
 </head>
-<body class="main ">
-<div class="loby w-50 bg-white justify-content-center p-4" >
-    <button class="btn btn-secondary mr-3" type="button" id="crearPartida">Crear partida</button>
-    <button class="btn btn-secondary " type="button" id="unirsePartida">Unirse partida</button>
+<body>
+<main>
+<div id="loby" class="cuadro_blanco">
+    <button class="boton" type="button" id="crearPartida">Crear partida</button>
+    <button class="boton" type="button" id="unirsePartida">Unirse partida</button>
 </div>
-<div class="input">
-    <input minlength='3' type='text' name='crear_partida'/>
-    <button type='submit' id='submit'>Crear partida</button>
+<div id="input" class="desaparecer">
+    <form action="">
+        <input id="codigo" class="cuadro_texto" minlength='3' type='text' name='crear_partida' title="codigo"/>
+    <button class="boton" type='submit' id='submit'>Crear partida</button>
+    </form>
 </div>
-<main >
+<div class="main">
     <table id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="casilla" id="casilla1" onclick="setCasilla(0)">
@@ -120,6 +123,7 @@
     <p id="turno_jugador">Tu turno</p>
     <button class="btn btn-secondary" type="button" id="reiniciar">Reiniciar</button>
     <button class="btn btn-secondary" type="button" id="volver">Volver</button>
+</div>
 </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

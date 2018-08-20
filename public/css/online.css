@@ -6,8 +6,6 @@ html, body{
     font-size: 100%;
 
 }
-
-
 *{
     box-sizing: border-box;
 }
@@ -18,15 +16,60 @@ html, body{
     align-items: center;
 }
 
-.loby{
+.cuadro_blanco{
     display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 4px;
+    padding: 2% 5% ;
+    border: 4px white solid;
 }
 
-.input{
+
+
+.cuadro_texto{
+    border: 1px white solid;
+    padding: 2px 2px 2px 5px;
+    border-radius: 3px;
+}
+
+
+
+.boton{
+    background-color: rgba(0,0,0,0);
+    border-radius: 3px;
+    border: 3px white solid;
+    color: white;
+    padding: 5px 10px;
+    margin: 0px 10px
+}
+
+@media(max-width: 500px){
+    .cuadro_blanco{
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+    .boton{
+        margin: 5px 0px;
+        width: 50%;
+        min-width: 180px;
+    }
+}
+
+.boton:hover{
+    color: black;
+    background-color: white;
+}
+
+.cuadro_texto:focus{
+    border: 1px #000000 solid;
+    align-self: center;
+}
+
+.desaparecer{
     display: none;
 }
-
 
 main{
     display: none;

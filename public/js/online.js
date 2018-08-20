@@ -54,22 +54,30 @@ var ruta_provisional;
 var ruta;
 var $crearPartida = $("#crearPartida");
 var $unirsePartida = $("#unirsePartida");
-var $loby = $(".loby");
-var $input = $(".input");
+var $loby = $("#loby");
+var $input = $("#input");
 var $submit= $("#submit");
+var $codigo= $("#codigo");
 var turno_global;
 var jugadores;
+
 
 $crearPartida.on("click", function () {
     $loby.css("display", "none");
     $submit.attr("id","submitCrear");
-    $input.css("display", "flex");
+    $input.css("display", "block");
+    $input.removeClass("desaparecer");
+    $input.addClass("cuadro_blanco");
+    $codigo.focus();
 });
 $unirsePartida.on("click", function () {
     $submit.attr("id","submitUnirse");
     $submit.text("Unirse");
     $loby.css("display", "none");
-    $input.css("display", "flex");
+    $input.css("display", "block");
+    $input.removeClass("desaparecer");
+    $input.addClass("cuadro_blanco");
+    $codigo.focus();
 });
 
 $submit.on("click", function () {
