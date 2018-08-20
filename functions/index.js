@@ -10,16 +10,12 @@ exports.empezarPartida = functions.database.ref('/partidas/{partidaId}')
         var jugadores = snapshot.val().jugadores;
         let casillero = [0,0,0,0,0,0,0,0,0];
         console.log(jugadores);
-        if(jugadores!==0) {
             const datos = {
                 turno_global: 1,
                 casillero: casillero,
                 ganador: 0
             };
             return snapshot.ref.child('datos').set(datos);
-        } else {
-            return;
-        }
     });
 
 exports.provisional = functions.database.ref('/partidas/{partidaId}/datos')
