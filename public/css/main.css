@@ -1,4 +1,5 @@
-main{
+.main{
+    min-width: 100%;
     min-height: 100vh;
     background: linear-gradient(to bottom, #99b3ff, #3366ff, #3366ff, #99b3ff);
 }

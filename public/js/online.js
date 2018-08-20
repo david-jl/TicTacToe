@@ -59,7 +59,6 @@ var $input = $("#input");
 var $submit= $("#submit");
 var $codigo= $("#codigo");
 var turno_global;
-var jugadores;
 
 
 $crearPartida.on("click", function () {
@@ -112,7 +111,7 @@ function submitCrear() {
         }
     });
     let ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
-    console.log(ruta_datos);
+    console.log(ruta_datos)
     ruta_datos.on("value", function (snapshot) {
         if(snapshot.exists()) {
             console.log("dibujar_crear");
@@ -171,6 +170,7 @@ function empiezaPartida() {
     $("main").css("display", "inline-flex");
     console.log("empiezaPartida");
 }
+
 var casillero_viejo = [
     0,0,0,
     0,0,0,
@@ -188,28 +188,38 @@ $("#volver").on("click", function () {
 });
 var ganador = 0;
 $reiniciar.css("display", "none");
+
 $reiniciar.on("click", function () {
-    $reiniciar.css("display", "none");
     turno_global = 0;
-    casillero_viejo = [
+    if(turno === 1) {
+        turno_jugador.textContent = "Espere a que el rival reinicie";
+        ruta_partida.on("value", function (snapshot) {
+            let jugadores = snapshot.val().jugadores;
+            if(jugadores === 2) {
+                ruta_partida.remove();
+                ruta_partida.set({turno_global: 1});
+                turno_jugador.textContent = "Su turno";
+            }
+        });
+
+    }else {
+        ruta_partida.remove();
+        turno_jugador.textContent = "Espere su turno";
+        ruta_partida.set({jugadores: 2});
+
+    }
+    casillero = [
         0,0,0,
         0,0,0,
         0,0,0,
     ];
-    jugadores = 0;
-    ruta_partida.on("value", function (snapshot) {
-        ganador = snapshot.child("datos").val().ganador;
-        console.log("ganador " + ganador);
-        if(ganador !== 0){
-            ruta_partida.remove();
-            ruta_partida.set({
-                jugadores:2
-            });
-        }
-    });
+    reiniciar.style.display = "none";
 
-
-    for(var i = 0; circulos.length; i++){
+    ganador = 0;
+    turno_jugador.style.fontSize = "1em";
+    turno_jugador.style.color = "#7F8793";
+    var i;
+    for(i = 0; circulos.length; i++){
         circulos[i].style.animation = "none";
         cruzB[i].style.animation = "none";
         cruzA[i].style.animation = "none";
@@ -220,6 +230,7 @@ $reiniciar.on("click", function () {
 
 
 function setCasilla (celda){
+    firebase.database().ref('partidas/' + ruta);
     let provisional = firebase.database().ref('partidas/' + ruta + '/provisional');
     provisional.set({
         turno_provisional: turno,
@@ -244,7 +255,7 @@ function dibujar(casillero_nuevo, ganador) {
     }
     console.log("turno " + turno + " turno global " + turno_global);
     if(turno_global===turno)
-        turno_jugador.textContent = "Su turno";
+        turno_jugador.textContent = "Tu turno";
     else
         turno_jugador.textContent = "Turno del rival";
 }
@@ -319,6 +330,4 @@ function partidaGanada(casillero, ganador){
         animacion_ganador(0, 4, 8, ganador);
     else if (casillero[2] === ganador && casillero[4] === ganador && casillero[6] === ganador)
         animacion_ganador(2, 4, 6, ganador);
-
-    $reiniciar.css("display", "flex");
 }

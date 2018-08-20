@@ -46,11 +46,11 @@ var cruz6svg = document.getElementById("cruz6svg");
 var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
-var cuadro_visible = false;
 var $reiniciar = $("#reiniciar");
 var $cuadro = $(".cuadro_terminarPartida");
+var $footer_casilla = $(".footer_casillas");
 var $main = $("main");
-var $partida = $("#partida");
+var $casilla = $("#casilla");
 var $texto_ganador = $("#texto_ganador");
 
 var casillero = [
@@ -73,8 +73,26 @@ function init() {
         0,0,0,
         0,0,0,
     ];
-    $reiniciar.css("display", "none");
+    turno = false;
+    $casilla.css("display", "flex");
+    $footer_casilla.css("display", "flex");
+    $cuadro.css("display", "none");
     ganador = 0;
+    console.log("ganador init:" + ganador);
+    console.log("casillero init:" + casillero);
+
+    $cuadro.mousedown(function (e) {
+        e.stopPropagation();
+    });
+    $footer_casilla.mousedown(function (e) {
+        e.stopPropagation();
+    });
+    $footer_casilla.mouseup(function (e) {
+        e.stopPropagation();
+    });
+    $cuadro.mouseup(function (e) {
+        e.stopPropagation();
+    });
     var i;
     for(i = 0; circulos.length; i++){
         circulos[i].style.animation = "none";
@@ -298,32 +316,58 @@ function partidaGanada() {
 
     if (ganador > 0) {
         setTimeout(function () {
-            $partida.css("visibility", "hidden");
-            $partida.css("display", "block");
-            $cuadro.css("position", "relative");
-            cuadro_visible = true;
+            if(ganador===1)
+                $texto_ganador.text("Has ganado");
+            else if (ganador ===2)
+                $texto_ganador.text("Has perdido");
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
         },1500);
     } else if (ganador === -1) {
         setTimeout(function () {
-            $partida.css("visibility", "hidden");
-            $cuadro.css("position", "relative");
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
             $texto_ganador.text("Empate");
-            cuadro_visible = true;
         },500);
     }
-    if(ganador!== 0) {
         $main.mouseup(function () {
-            $cuadro.css("visibility", "visible");
-            $partida.css("visibility", "hidden");
+            if(ganador!==0) {
+                $casilla.css("display", "none");
+                $footer_casilla.css("display", "none");
+                $cuadro.css("display", "flex");
+            }
         });
+        $main.on("touchend",function () {
+            if(ganador!==0) {
+                $footer_casilla.css("display", "none");
+                $casilla.css("display", "none");
+                $cuadro.css("display", "flex");
+            }
+        });
+
         $main.mousedown(function () {
-            $cuadro.css("visibility", "hidden");
-            $partida.css("visibility", "visible");
+            if(ganador!==0) {
+                $casilla.css("display", "flex");
+                $footer_casilla.css("display", "flex");
+                $cuadro.css("display", "none");
+            }
+        });
+        $main.on("touchstart", function () {
+            if(ganador !== 0) {
+                $footer_casilla.css("display", "flex");
+                $casilla.css("display", "flex");
+                $cuadro.css("display", "none");
+            }
+        });
+        $cuadro.on("touchstart", function (e) {
+            e.stopPropagation();
         });
         $cuadro.mousedown(function (e) {
             e.stopPropagation();
         });
-    }
+        $reiniciar.on("click", init);
 }
 
 function animacion_ganador(casillero1, casillero2, casillero3, ganador) {

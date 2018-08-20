@@ -1,19 +1,16 @@
 html, body{
     font-family: sans-serif;
     margin: 0;
-    min-height: 100%;
     font-size: 100%;
 
 }
-
-
 *{
     box-sizing: border-box;
 }
 
 
 main{
-    background: linear-gradient(to bottom, #99b3ff, #3366ff, #3366ff, #99b3ff);
+    background: linear-gradient(to bottom, #99b3ff, #2684ff, #2684ff, #99b3ff);
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -38,7 +35,7 @@ main{
     justify-content: center;
     align-items: center;
     background-color: white;
-    border-radius: 3px;
+    border-radius: 5px;
     border: 1px gray solid;
     padding: 2%;
     -webkit-touch-callout: none;
