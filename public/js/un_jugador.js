@@ -122,6 +122,7 @@ function azar() {
 function dibujar_ia() {
     var numero = azar();
     if(casillero[numero]===0 && ganador === 0) {
+        console.log("Ganador: " + ganador);
         cruzsvg[numero].style.display = "block";
         cruzA[numero].style.animation = "0.5s 0.5s stroke 1 forwards";
         cruzB[numero].style.animation = "0.5s 0.7s stroke 1 forwards";
@@ -132,6 +133,7 @@ function dibujar_ia() {
 }
 function dibujar(celda) {
     if (casillero[celda] === 0 && ganador === 0) {
+        console.log("Ganador circulo: " + ganador);
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno = true;
@@ -314,6 +316,7 @@ function partidaGanada() {
         casillero[7] !== 0 && casillero[8] !== 0)
         ganador = -1;
 
+
     if (ganador > 0) {
         setTimeout(function () {
             if(ganador===1)
@@ -323,14 +326,34 @@ function partidaGanada() {
             $casilla.css("display", "none");
             $footer_casilla.css("display", "none");
             $cuadro.css("display", "flex");
-        },1500);
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+                }
+            }
+            },1500);
     } else if (ganador === -1) {
         setTimeout(function () {
             $casilla.css("display", "none");
             $footer_casilla.css("display", "none");
             $cuadro.css("display", "flex");
             $texto_ganador.text("Empate");
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+
+                }
+            }
         },500);
+    }
+    if(ganador !== 0){
+
     }
         $main.mouseup(function () {
             if(ganador!==0) {
