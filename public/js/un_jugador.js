@@ -7,7 +7,6 @@ var circulo6 = document.getElementById("circulo6");
 var circulo7 = document.getElementById("circulo7");
 var circulo8 = document.getElementById("circulo8");
 var circulo9 = document.getElementById("circulo9");
-
 var cruz1A = document.getElementById("cruz1A");
 var cruz1B = document.getElementById("cruz1B");
 var cruz2A = document.getElementById("cruz2A");
@@ -26,7 +25,6 @@ var cruz8A = document.getElementById("cruz8A");
 var cruz8B = document.getElementById("cruz8B");
 var cruz9A = document.getElementById("cruz9A");
 var cruz9B = document.getElementById("cruz9B");
-
 var cir1svg = document.getElementById("cir1svg");
 var cir2svg = document.getElementById("cir2svg");
 var cir3svg = document.getElementById("cir3svg");
@@ -36,7 +34,6 @@ var cir6svg = document.getElementById("cir6svg");
 var cir7svg = document.getElementById("cir7svg");
 var cir8svg = document.getElementById("cir8svg");
 var cir9svg = document.getElementById("cir9svg");
-
 var cruz1svg = document.getElementById("cruz1svg");
 var cruz2svg = document.getElementById("cruz2svg");
 var cruz3svg = document.getElementById("cruz3svg");
@@ -63,9 +60,9 @@ var cruzA = [cruz1A, cruz2A, cruz3A, cruz4A, cruz5A, cruz6A, cruz7A, cruz8A, cru
 var cruzB = [cruz1B, cruz2B, cruz3B, cruz4B, cruz5B, cruz6B, cruz7B, cruz8B, cruz9B];
 var cirsvg = [cir1svg, cir2svg, cir3svg, cir4svg, cir5svg, cir6svg, cir7svg, cir8svg, cir9svg];
 var cruzsvg = [cruz1svg, cruz2svg, cruz3svg, cruz4svg, cruz5svg, cruz6svg, cruz7svg, cruz8svg, cruz9svg];
-
 var turno = false;
 var ganador = 0;
+
 
 function init() {
     casillero = [
@@ -74,13 +71,11 @@ function init() {
         0,0,0,
     ];
     turno = false;
+    $cuadro.addClass("animated bounceInDown");
     $casilla.css("display", "flex");
     $footer_casilla.css("display", "flex");
     $cuadro.css("display", "none");
     ganador = 0;
-    console.log("ganador init:" + ganador);
-    console.log("casillero init:" + casillero);
-
     $cuadro.mousedown(function (e) {
         e.stopPropagation();
     });
@@ -102,12 +97,9 @@ function init() {
         cirsvg[i].style.display = "none";
     }
 }
-
 function azar() {
     if(gana_ia()!== -1)
         aleatorio = gana_ia();
-    else if(ia_dosCuadrados()!== -1)
-        aleatorio = ia_dosCuadrados();
     else {
         var aleatorio = Math.floor(Math.random() * (9 + 1));
         var ayuda = 100;
@@ -118,7 +110,6 @@ function azar() {
     }
     return aleatorio;
 }
-
 function dibujar_ia() {
     var numero = azar();
     if(casillero[numero]===0 && ganador === 0) {
@@ -128,7 +119,7 @@ function dibujar_ia() {
         cruzB[numero].style.animation = "0.5s 0.7s stroke 1 forwards";
         turno = false;
         casillero[numero] = 2;
-        partidaGanada();
+        partidaGanada(2);
     }
 }
 function dibujar(celda) {
@@ -138,178 +129,67 @@ function dibujar(celda) {
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno = true;
         casillero[celda] = 1;
-        partidaGanada();
+        partidaGanada(1);
         dibujar_ia()
     }
 }
-
 function gana_ia() {
-    if(casillero[0] === 2 && casillero[1] === 2 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[1] === 2 && casillero[2] === 2 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 2 && casillero[2] === 2 && casillero[1] === 0 )
-        return 1;
-    else if(casillero[3] === 2 && casillero[4] === 2 && casillero[5] === 0 )
-        return 5;
-    else if(casillero[4] === 2 && casillero[5] === 2 && casillero[3] === 0 )
-        return 3;
-    else if(casillero[3] === 2 && casillero[5] === 2 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[6] === 2 && casillero[7] === 2 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[7] === 2 && casillero[8] === 2 && casillero[6] === 0 )
-        return 6;
-    else if(casillero[6] === 2 && casillero[8] === 2 && casillero[7] === 0 )
-        return 7;
-    else if(casillero[0] === 2 && casillero[3] === 2 && casillero[6] === 0 )
-        return 6;
-    else if(casillero[3] === 2 && casillero[6] === 2 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 2 && casillero[6] === 2 && casillero[3] === 0 )
-        return 3;
-    else if(casillero[1] === 2 && casillero[4] === 2 && casillero[7] === 0 )
-        return 7;
-    else if(casillero[1] === 2 && casillero[7] === 2 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[4] === 2 && casillero[7] === 2 && casillero[1] === 0 )
-        return 1;
-    else if(casillero[2] === 2 && casillero[5] === 2 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[5] === 2 && casillero[8] === 2 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[2] === 2 && casillero[8] === 2 && casillero[5] === 0 )
-        return 5;
-    else if(casillero[0] === 2 && casillero[4] === 2 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[4] === 2 && casillero[8] === 2 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 2 && casillero[8] === 2 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[6] === 2 && casillero[4] === 2 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[6] === 2 && casillero[2] === 2 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[4] === 2 && casillero[2] === 2 && casillero[6] === 0 )
-        return 6;
-    else return -1;
-}
-function ia_dosCuadrados() {
-    if(casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[1] === 1 && casillero[2] === 1 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 1 && casillero[2] === 1 && casillero[1] === 0 )
-        return 1;
-    else if(casillero[3] === 1 && casillero[4] === 1 && casillero[5] === 0 )
-        return 5;
-    else if(casillero[4] === 1 && casillero[5] === 1 && casillero[3] === 0 )
-        return 3;
-    else if(casillero[3] === 1 && casillero[5] === 1 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[6] === 1 && casillero[7] === 1 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[7] === 1 && casillero[8] === 1 && casillero[6] === 0 )
-        return 6;
-    else if(casillero[6] === 1 && casillero[8] === 1 && casillero[7] === 0 )
-        return 7;
-    else if(casillero[0] === 1 && casillero[3] === 1 && casillero[6] === 0 )
-        return 6;
-    else if(casillero[3] === 1 && casillero[6] === 1 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 1 && casillero[6] === 1 && casillero[3] === 0 )
-        return 3;
-    else if(casillero[1] === 1 && casillero[4] === 1 && casillero[7] === 0 )
-        return 7;
-    else if(casillero[1] === 1 && casillero[7] === 1 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[4] === 1 && casillero[7] === 1 && casillero[1] === 0 )
-        return 1;
-    else if(casillero[2] === 1 && casillero[5] === 1 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[5] === 1 && casillero[8] === 1 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[2] === 1 && casillero[8] === 1 && casillero[5] === 0 )
-        return 5;
-    else if(casillero[0] === 1 && casillero[4] === 1 && casillero[8] === 0 )
-        return 8;
-    else if(casillero[4] === 1 && casillero[8] === 1 && casillero[0] === 0 )
-        return 0;
-    else if(casillero[0] === 1 && casillero[8] === 1 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[6] === 1 && casillero[4] === 1 && casillero[2] === 0 )
-        return 2;
-    else if(casillero[6] === 1 && casillero[2] === 1 && casillero[4] === 0 )
-        return 4;
-    else if(casillero[4] === 1 && casillero[2] === 1 && casillero[6] === 0 )
-        return 6;
-    else return -1;
+    var casilla_ia = -1;
+    for(var i = 2;casilla_ia=== -1 && i>=1; i--) {
+        if (casillero[1] === i && casillero[2] === i && casillero[0] === 0 || casillero[3] === i && casillero[6] === i && casillero[0] === 0 || casillero[4] === i && casillero[8] === i && casillero[0] === 0)
+            casilla_ia = 0;
+        else if (casillero[4] === i && casillero[7] === i && casillero[1] === 0 || casillero[0] === i && casillero[2] === i && casillero[1] === 0)
+            casilla_ia = 1;
+        else if (casillero[0] === i && casillero[1] === i && casillero[2] === 0 || casillero[6] === i && casillero[4] === i && casillero[2] === 0 || casillero[5] === i && casillero[8] === i && casillero[2] === 0)
+            casilla_ia = 2;
+        else if (casillero[4] === i && casillero[5] === i && casillero[3] === 0 || casillero[0] === i && casillero[6] === i && casillero[3] === 0)
+            casilla_ia = 3;
+        else if (casillero[6] === i && casillero[2] === i && casillero[4] === 0 || casillero[0] === i && casillero[8] === i && casillero[4] === 0 || casillero[1] === i && casillero[7] === i && casillero[4] === 0 || casillero[3] === i && casillero[5] === i && casillero[4] === 0)
+            casilla_ia = 4;
+        else if (casillero[2] === i && casillero[8] === i && casillero[5] === 0 || casillero[3] === i && casillero[4] === i && casillero[5] === 0)
+            casilla_ia = 5;
+        else if (casillero[4] === i && casillero[2] === i && casillero[6] === 0 || casillero[0] === i && casillero[3] === i && casillero[6] === 0 || casillero[7] === i && casillero[8] === i && casillero[6] === 0)
+            casilla_ia = 6;
+        else if (casillero[6] === i && casillero[8] === i && casillero[7] === 0 || casillero[1] === i && casillero[4] === i && casillero[7] === 0)
+            casilla_ia = 7;
+        else if (casillero[6] === i && casillero[7] === i && casillero[8] === 0 || casillero[2] === i && casillero[5] === i && casillero[8] === 0 || casillero[0] === i && casillero[4] === i && casillero[8] === 0)
+            casilla_ia = 8;
+    }
+    return casilla_ia;
 }
 
-function partidaGanada() {
-    if (casillero[0] === 1 && casillero[1] === 1 && casillero[2] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 1, 2, 1);
+function partidaGanada(gana) {
+    if (casillero[0] === gana && casillero[1] === gana && casillero[2] === gana) {
+        ganador = gana;
+        animacion_ganador(0, 1, 2, gana);
     }
-    else if (casillero[0] === 2 && casillero[1] === 2 && casillero[2] === 2){
-        ganador = 2;
-        animacion_ganador(0,1,2,2);
+    else if (casillero[3] === gana && casillero[4] === gana && casillero[5] === gana) {
+        ganador = gana;
+        animacion_ganador(3, 4, 5, gana);
     }
-    else if (casillero[3] === 1 && casillero[4] === 1 && casillero[5] === 1) {
-        ganador = 1;
-        animacion_ganador(3, 4, 5, 1);
+    else if (casillero[6] === gana && casillero[7] === gana && casillero[8] === gana) {
+        ganador = gana;
+        animacion_ganador(6, 7, 8, gana);
     }
-    else if (casillero[3] === 2 && casillero[4] === 2 && casillero[5] === 2) {
-        ganador = 2;
-        animacion_ganador(3, 4, 5, 2);
+    else if (casillero[0] === gana && casillero[3] === gana && casillero[6] === gana) {
+        ganador = gana;
+        animacion_ganador(0, 3, 6, gana);
     }
-    else if (casillero[6] === 1 && casillero[7] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(6, 7, 8, 1);
+    else if (casillero[1] === gana && casillero[4] === gana && casillero[7] === gana) {
+        ganador = gana;
+        animacion_ganador(1, 4, 7, gana);
     }
-    else if (casillero[6] === 2 && casillero[7] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(6, 7, 8, 2);
+    else if (casillero[2] === gana && casillero[5] === gana && casillero[8] === gana) {
+        ganador = gana;
+        animacion_ganador(2, 5, 8, gana);
     }
-    else if (casillero[0] === 1 && casillero[3] === 1 && casillero[6] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 3, 6, 1);
+    else if (casillero[0] === gana && casillero[4] === gana && casillero[8] === gana) {
+        ganador = gana;
+        animacion_ganador(0, 4, 8, gana);
     }
-    else if (casillero[0] === 2 && casillero[3] === 2 && casillero[6] === 2) {
-        ganador = 2;
-        animacion_ganador(0, 3, 6, 2);
-    }
-    else if (casillero[1] === 1 && casillero[4] === 1 && casillero[7] === 1) {
-        ganador = 1;
-        animacion_ganador(1, 4, 7, 1);
-    }
-    else if (casillero[1] === 2 && casillero[4] === 2 && casillero[7] === 2) {
-        ganador = 2;
-        animacion_ganador(1, 4, 7, 2);
-    }
-    else if (casillero[2] === 1 && casillero[5] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(2, 5, 8, 1);
-    }
-    else if (casillero[2] === 2 && casillero[5] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(2, 5, 8, 2);
-    }
-    else if (casillero[0] === 1 && casillero[4] === 1 && casillero[8] === 1) {
-        ganador = 1;
-        animacion_ganador(0, 4, 8, 1);
-    }
-    else if (casillero[0] === 2 && casillero[4] === 2 && casillero[8] === 2) {
-        ganador = 2;
-        animacion_ganador(0, 4, 8, 2);
-    }
-    else if (casillero[2] === 1 && casillero[4] === 1 && casillero[6] === 1) {
-        ganador = 1;
-        animacion_ganador(2, 4, 6, 1);
-    }
-    else if (casillero[2] === 2 && casillero[4] === 2 && casillero[6] === 2) {
-        ganador = 2;
-        animacion_ganador(2, 4, 6, 2);
+    else if (casillero[2] === gana && casillero[4] === gana && casillero[6] === gana) {
+        ganador = gana;
+        animacion_ganador(2, 4, 6, gana);
     }
     else if (casillero[0] !== 0 && casillero[1] !== 0 && casillero[2] !== 0 && casillero[3] !== 0 &&
         casillero[4] !== 0 && casillero[5] !== 0 && casillero[6] !== 0 &&
@@ -352,35 +232,31 @@ function partidaGanada() {
             }
         },500);
     }
-    if(ganador !== 0){
-
-    }
         $main.mouseup(function () {
             if(ganador!==0) {
+                $cuadro.removeClass("animated bounceInDown");
                 $casilla.css("display", "none");
-                $footer_casilla.css("display", "none");
                 $cuadro.css("display", "flex");
             }
         });
-        $main.on("touchend",function () {
+        $main.on("touchend ",function () {
             if(ganador!==0) {
-                $footer_casilla.css("display", "none");
+                $cuadro.removeClass("animated bounceInDown");
                 $casilla.css("display", "none");
                 $cuadro.css("display", "flex");
             }
         });
-
         $main.mousedown(function () {
             if(ganador!==0) {
+                $cuadro.removeClass("animated bounceInDown");
                 $casilla.css("display", "flex");
-                $footer_casilla.css("display", "flex");
                 $cuadro.css("display", "none");
             }
         });
         $main.on("touchstart", function () {
             if(ganador !== 0) {
+                $cuadro.removeClass("animated bounceInDown");
                 $footer_casilla.css("display", "flex");
-                $casilla.css("display", "flex");
                 $cuadro.css("display", "none");
             }
         });
@@ -409,6 +285,4 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
         cruzA[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
         cruzB[casillero3].style.animation = "1s ease 0s 1 normal forwards running parpadeo";
     }
-
 }
-

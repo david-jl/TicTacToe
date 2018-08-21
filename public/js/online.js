@@ -48,7 +48,11 @@ var cruz7svg = document.getElementById("cruz7svg");
 var cruz8svg = document.getElementById("cruz8svg");
 var cruz9svg = document.getElementById("cruz9svg");
 var $reiniciar = $("#reiniciar");
-var turno = 0;
+var $cuadro = $(".cuadro_terminarPartida");
+var $footer_casilla = $(".footer_casillas");
+var $main = $("main");
+var $casilla = $("#casilla");
+var $texto_ganador = $("#texto_ganador");var turno = 0;
 var ruta_partida;
 var ruta_provisional;
 var ruta;
@@ -191,6 +195,22 @@ $reiniciar.css("display", "none");
 
 $reiniciar.on("click", function () {
     turno_global = 0;
+    $cuadro.addClass("animated bounceInDown");
+    $casilla.css("display", "flex");
+    $footer_casilla.css("display", "flex");
+    $cuadro.css("display", "none");
+    $cuadro.mousedown(function (e) {
+        e.stopPropagation();
+    });
+    $footer_casilla.mousedown(function (e) {
+        e.stopPropagation();
+    });
+    $footer_casilla.mouseup(function (e) {
+        e.stopPropagation();
+    });
+    $cuadro.mouseup(function (e) {
+        e.stopPropagation();
+    });
     if(turno === 1) {
         turno_jugador.textContent = "Espere a que el rival reinicie";
         ruta_partida.on("value", function (snapshot) {
@@ -213,8 +233,6 @@ $reiniciar.on("click", function () {
         0,0,0,
         0,0,0,
     ];
-    reiniciar.style.display = "none";
-
     ganador = 0;
     turno_jugador.style.fontSize = "1em";
     turno_jugador.style.color = "#7F8793";
@@ -271,19 +289,78 @@ function dibujar_cruz(celda) {
     cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
 }
 
-/*
-    //TODO: Mensaje de "Has ganado" o "Has perdido"
-    if (ganador > 0) {
-        turno_jugador.textContent = "Ha ganado el jugador " + ganador;
-        turno_jugador.style.fontSize = "2em";
-        turno_jugador.style.color = "#000000";
-        reiniciar.style.display = "block";
+/*if (ganador > 0) {
+        setTimeout(function () {
+            if(ganador===1)
+                $texto_ganador.text("Ganan los círculos");
+            else if (ganador ===2)
+                $texto_ganador.text("Ganan las cruces");
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+                }
+            }
+        },1500);
     } else if (ganador === -1) {
-        turno_jugador.textContent = "Empate";
-        turno_jugador.style.fontSize = "2em";
-        turno_jugador.style.color = "#000000";
-        reiniciar.style.display = "block";
+        setTimeout(function () {
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+            $texto_ganador.text("Empate");
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+                }
+            }
+        },500);
     }
+    if(ganador !== 0){
+
+    }
+    $main.mouseup(function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+        }
+    });
+    $main.on("touchend",function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+        }
+    });
+
+    $main.mousedown(function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "flex");
+            $cuadro.css("display", "none");
+        }
+    });
+    $main.on("touchstart", function () {
+        if(ganador !== 0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "flex");
+            $cuadro.css("display", "none");
+        }
+    });
+    $cuadro.on("touchstart", function (e) {
+        e.stopPropagation();
+    });
+    $cuadro.mousedown(function (e) {
+        e.stopPropagation();
+    });
 }*/
 
 

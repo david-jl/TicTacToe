@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tic Tac Toe</title>
-    <meta name="theme-color" content="#4FC3F7">
+    <meta name="theme-color" content="#95d4ff">
     <meta name="MobileOptimized" content="width">
     <meta name="HandheldFriendly" content="true">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
 </head>
 <body>
 <main>
-    <table id="casilla" border="0" cellspacing="0" cellpadding="0">
+    <table class="animated zoomIn" id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="casilla" id="casilla1" onclick="dibujar(0)">
                 <svg display="none" id="cruz1svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
@@ -109,9 +109,18 @@
             </td>
         </tr>
     </table>
-    <p id="turno_jugador">Turno O</p>
-    <button class="btn btn-secondary" type="button" id="reiniciar">Reiniciar</button>
-    <button onclick="location.href='../index.html'" class="btn btn-secondary" type="button" id="volver">Volver</button>
+    <div class="footer_casillas">
+        <p id="turno_jugador">Turno O</p>
+        <button onclick="location.href='../index.html'" class="boton_opciones" type="button" id="volver">Volver</button>
+    </div>
+
+    <div class="cuadro_terminarPartida animated bounceInDown">
+        <p id="texto_ganador" style="font-size: 2em">Has ganado</p>
+        <button id="reiniciar" class="boton_cuadro" type="button">Otra partida</button>
+        <button onclick="location.href='../index.html'" class="boton_cuadro" type="button">Inicio</button>
+        <p style="margin: 10px 0px 0px 0px;color:#6f6f6f; font-size: 0.8em">Pulsa fuera del cuadro para ver la partida.</p>
+    </div>
+
 </main>
 <script src="../js/dos_jugadores.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
