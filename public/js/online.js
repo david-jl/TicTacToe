@@ -191,9 +191,9 @@ $("#volver").on("click", function () {
     location.href = "../index.html";
 });
 var ganador = 0;
-$reiniciar.css("display", "none");
 
 $reiniciar.on("click", function () {
+    $casilla.addClass("animated zoomIn");
     turno_global = 0;
     $cuadro.addClass("animated bounceInDown");
     $casilla.css("display", "flex");

@@ -72,6 +72,7 @@ function init() {
     turno = false;
     ganador = 0;
     $cuadro.addClass("animated bounceInDown");
+    $casilla.addClass("animated zoomIn");
     $casilla.css("display", "flex");
     $footer_casilla.css("display", "flex");
     $cuadro.css("display", "none");
