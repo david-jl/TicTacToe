@@ -50,7 +50,7 @@ var cruz9svg = document.getElementById("cruz9svg");
 var $reiniciar = $("#reiniciar");
 var $cuadro = $(".cuadro_terminarPartida");
 var $footer_casilla = $(".footer_casillas");
-var $main = $("main");
+var $main = $(".main");
 var $casilla = $("#casilla");
 var $texto_ganador = $("#texto_ganador");var turno = 0;
 var ruta_partida;
@@ -171,7 +171,7 @@ function submitUnirse() {
 
 function empiezaPartida() {
     $input.css("display", "none");
-    $("main").css("display", "inline-flex");
+    $main.css("display", "inline-flex");
     console.log("empiezaPartida");
 }
 
@@ -289,81 +289,6 @@ function dibujar_cruz(celda) {
     cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
 }
 
-/*if (ganador > 0) {
-        setTimeout(function () {
-            if(ganador===1)
-                $texto_ganador.text("Ganan los círculos");
-            else if (ganador ===2)
-                $texto_ganador.text("Ganan las cruces");
-            $casilla.css("display", "none");
-            $footer_casilla.css("display", "none");
-            $cuadro.css("display", "flex");
-            for(let i = 0;i<circulos.length;i++){
-                if(casillero[i]===1)
-                    circulos[i].style.animation = "0s trazar 1 forwards";
-                else if(casillero[i] ===2) {
-                    cruzA[i].style.animation = "0s stroke 1 forwards";
-                    cruzB[i].style.animation = "0s stroke 1 forwards";
-                }
-            }
-        },1500);
-    } else if (ganador === -1) {
-        setTimeout(function () {
-            $casilla.css("display", "none");
-            $footer_casilla.css("display", "none");
-            $cuadro.css("display", "flex");
-            $texto_ganador.text("Empate");
-            for(let i = 0;i<circulos.length;i++){
-                if(casillero[i]===1)
-                    circulos[i].style.animation = "0s trazar 1 forwards";
-                else if(casillero[i] ===2) {
-                    cruzA[i].style.animation = "0s stroke 1 forwards";
-                    cruzB[i].style.animation = "0s stroke 1 forwards";
-                }
-            }
-        },500);
-    }
-    if(ganador !== 0){
-
-    }
-    $main.mouseup(function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "none");
-            $cuadro.css("display", "flex");
-        }
-    });
-    $main.on("touchend",function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "none");
-            $cuadro.css("display", "flex");
-        }
-    });
-
-    $main.mousedown(function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "flex");
-            $cuadro.css("display", "none");
-        }
-    });
-    $main.on("touchstart", function () {
-        if(ganador !== 0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "flex");
-            $cuadro.css("display", "none");
-        }
-    });
-    $cuadro.on("touchstart", function (e) {
-        e.stopPropagation();
-    });
-    $cuadro.mousedown(function (e) {
-        e.stopPropagation();
-    });
-}*/
-
-
 function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
     console.log("animacion partidaGanada");
 
@@ -407,4 +332,75 @@ function partidaGanada(casillero, ganador){
         animacion_ganador(0, 4, 8, ganador);
     else if (casillero[2] === ganador && casillero[4] === ganador && casillero[6] === ganador)
         animacion_ganador(2, 4, 6, ganador);
+
+    if (ganador > 0) {
+        setTimeout(function () {
+            if(ganador===1)
+                $texto_ganador.text("Ganan los círculos");
+            else if (ganador ===2)
+                $texto_ganador.text("Ganan las cruces");
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+                }
+            }
+        },1500);
+    } else if (ganador === -1) {
+        setTimeout(function () {
+            $casilla.css("display", "none");
+            $footer_casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+            $texto_ganador.text("Empate");
+            for(let i = 0;i<circulos.length;i++){
+                if(casillero[i]===1)
+                    circulos[i].style.animation = "0s trazar 1 forwards";
+                else if(casillero[i] ===2) {
+                    cruzA[i].style.animation = "0s stroke 1 forwards";
+                    cruzB[i].style.animation = "0s stroke 1 forwards";
+                }
+            }
+        },500);
+    }
+
+    $main.mouseup(function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+        }
+    });
+    $main.on("touchend",function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "none");
+            $cuadro.css("display", "flex");
+        }
+    });
+
+    $main.mousedown(function () {
+        if(ganador!==0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "flex");
+            $cuadro.css("display", "none");
+        }
+    });
+    $main.on("touchstart", function () {
+        if(ganador !== 0) {
+            $cuadro.removeClass("animated bounceInDown");
+            $casilla.css("display", "flex");
+            $cuadro.css("display", "none");
+        }
+    });
+    $cuadro.on("touchstart", function (e) {
+        e.stopPropagation();
+    });
+    $cuadro.mousedown(function (e) {
+        e.stopPropagation();
+    });
 }
