@@ -1,5 +1,5 @@
 
-var cacheName = 'weatherPWA-v2';
+var cacheName = 'tictactoe';
 var filesToCache = [
     '*'
 ];

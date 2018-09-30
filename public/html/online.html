@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/online.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 </head>
 <body>
 <main>
@@ -29,7 +30,7 @@
     <button class="boton" type='submit' id='submit'>Crear partida</button>
 </div>
 <div class="main">
-    <table id="casilla" border="0" cellspacing="0" cellpadding="0">
+    <table class="animated zoomIn" id="casilla" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="casilla" id="casilla1" onclick="setCasilla(0)">
                 <svg display="none" id="cruz1svg" class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
@@ -124,7 +125,7 @@
     </div>
 
     <div class="cuadro_terminarPartida animated bounceInDown">
-        <p id="texto_ganador" style="font-size: 2em">Has ganado</p>
+        <p id="texto_ganador" style="font-size: 1.5em">Has ganado</p>
         <button id="reiniciar" class="boton_cuadro" type="button">Otra partida</button>
         <button onclick="location.href='../index.html'" class="boton_cuadro" type="button">Inicio</button>
         <p style="margin: 10px 0px 0px 0px;color:#6f6f6f; font-size: 0.8em">Pulsa fuera del cuadro para ver la partida.</p>

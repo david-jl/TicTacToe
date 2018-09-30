@@ -302,10 +302,10 @@ function partidaGanada(casillero, ganador){
         ganador = -1;
     if (ganador > 0) {
         setTimeout(function () {
-            if(ganador===1)
-                $texto_ganador.text("Ganan los círculos");
-            else if (ganador ===2)
-                $texto_ganador.text("Ganan las cruces");
+            if(ganador===1 && turno === 1 || ganador ===2 && turno ===2)
+                $texto_ganador.text("Has ganado");
+            else
+                $texto_ganador.text("Has perdido");
             $casilla.css("display", "none");
             $footer_casilla.css("display", "none");
             $cuadro.css("display", "flex");

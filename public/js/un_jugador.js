@@ -114,7 +114,6 @@ function azar() {
 function dibujar_ia() {
     var numero = azar();
     if(casillero[numero]===0 && ganador === 0) {
-        console.log("Ganador: " + ganador);
         cruzsvg[numero].style.display = "block";
         cruzA[numero].style.animation = "0.5s 0.5s stroke 1 forwards";
         cruzB[numero].style.animation = "0.5s 0.7s stroke 1 forwards";
@@ -125,7 +124,6 @@ function dibujar_ia() {
 }
 function dibujar(celda) {
     if (casillero[celda] === 0 && ganador === 0) {
-        console.log("Ganador circulo: " + ganador);
         cirsvg[celda].style.display = "block";
         circulos[celda].style.animation = "1s trazar 1 forwards";
         turno = true;
