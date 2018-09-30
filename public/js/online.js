@@ -51,8 +51,10 @@ var $reiniciar = $("#reiniciar");
 var $cuadro = $(".cuadro_terminarPartida");
 var $footer_casilla = $(".footer_casillas");
 var $main = $(".main");
+var $todo = $("main");
 var $casilla = $("#casilla");
-var $texto_ganador = $("#texto_ganador");var turno = 0;
+var $texto_ganador = $("#texto_ganador");
+var turno = 0;
 var ruta_partida;
 var ruta_provisional;
 var ruta;
@@ -63,6 +65,8 @@ var $input = $("#input");
 var $submit= $("#submit");
 var $codigo= $("#codigo");
 var turno_global;
+var ganador = 0;
+var jugadores = 0;
 
 
 $crearPartida.on("click", function () {
@@ -93,7 +97,6 @@ $submit.on("click", function () {
 });
 
 function submitCrear() {
-    console.log("submitUnirse funcion");
     ruta = document.getElementsByName("crear_partida")[0].value;
     if (ruta.length < 3)
         $input.append("Clave demasiado corta. Introduce mas de 3 caracteres");
@@ -108,25 +111,19 @@ function submitCrear() {
     }
     ruta_provisional = firebase.database().ref("partidas/" + ruta);
     ruta_provisional.on("value", function (snapshot) {
-        console.log("jugadores " + snapshot.val().jugadores);
         if(snapshot.exists() && snapshot.val().jugadores===2) {
             $input.css("display", "none");
             empiezaPartida();
         }
     });
-    let ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
-    console.log(ruta_datos)
+    ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
     ruta_datos.on("value", function (snapshot) {
         if(snapshot.exists()) {
-            console.log("dibujar_crear");
             turno = 1;
             let casillero_nuevo = snapshot.val().casillero;
-            let ganador = snapshot.val().ganador;
+            ganador = snapshot.val().ganador;
             turno_global = snapshot.val().turno_global;
-            console.log(casillero_nuevo !== null);
-            console.log(casillero_nuevo);
             if(casillero_nuevo!==null) {
-                console.log(casillero_viejo);
                 dibujar(casillero_nuevo, ganador);
             }
         }
@@ -138,31 +135,23 @@ function submitUnirse() {
     ruta_partida = firebase.database().ref("partidas/" + ruta);
     ruta_partida.on("value", function (snapshot) {
         if (snapshot.exists() && turno === 0) {
-            console.log("unirsePartida");
-            let jugadores = snapshot.val().jugadores;
+            jugadores = snapshot.val().jugadores;
             if (jugadores === 1)
                 ruta_partida.update({jugadores: 2});
-            console.log(jugadores);
             $input.css("display", "none");
             empiezaPartida();
             turno = 2;
         } else if (!snapshot.exists()) {
             //TODO: poner algo para que quede bonito de error
-            console.log("Error");
         }
     });
-    let ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
-    console.log(ruta_datos)
+    ruta_datos = firebase.database().ref("partidas/" + ruta  + "/datos");
     ruta_datos.on("value", function (snapshot) {
         if(snapshot.exists()) {
-            console.log("dibujar_crear");
             let casillero_nuevo = snapshot.val().casillero;
-            let ganador = snapshot.val().ganador;
+            ganador = snapshot.val().ganador;
             turno_global = snapshot.val().turno_global;
-            console.log(casillero_nuevo !== null);
-            console.log(casillero_nuevo);
             if(casillero_nuevo!==null) {
-                console.log(casillero_viejo);
                 dibujar(casillero_nuevo, ganador);
             }
         }
@@ -172,7 +161,6 @@ function submitUnirse() {
 function empiezaPartida() {
     $input.css("display", "none");
     $main.css("display", "inline-flex");
-    console.log("empiezaPartida");
 }
 
 var casillero_viejo = [
@@ -190,7 +178,6 @@ $("#volver").on("click", function () {
     ruta_partida.remove();
     location.href = "../index.html";
 });
-var ganador = 0;
 
 $reiniciar.on("click", function () {
     $casilla.addClass("animated zoomIn");
@@ -199,45 +186,35 @@ $reiniciar.on("click", function () {
     $casilla.css("display", "flex");
     $footer_casilla.css("display", "flex");
     $cuadro.css("display", "none");
-    $cuadro.mousedown(function (e) {
+    ganador = 0;
+    $todo.mousedown(function (e) {
         e.stopPropagation();
     });
-    $footer_casilla.mousedown(function (e) {
-        e.stopPropagation();
-    });
-    $footer_casilla.mouseup(function (e) {
-        e.stopPropagation();
-    });
-    $cuadro.mouseup(function (e) {
+    $todo.on("touchstart", function (e) {
         e.stopPropagation();
     });
     if(turno === 1) {
+        ruta_partida.remove();
         turno_jugador.textContent = "Espere a que el rival reinicie";
         ruta_partida.on("value", function (snapshot) {
-            let jugadores = snapshot.val().jugadores;
+            jugadores = snapshot.val().jugadores;
             if(jugadores === 2) {
-                ruta_partida.remove();
-                ruta_partida.set({turno_global: 1});
                 turno_jugador.textContent = "Su turno";
+                ganador = 0;
             }
         });
-
     }else {
         ruta_partida.remove();
         turno_jugador.textContent = "Espere su turno";
         ruta_partida.set({jugadores: 2});
-
+        ganador = 0;
     }
-    casillero = [
+    casillero_viejo = [
         0,0,0,
         0,0,0,
         0,0,0,
     ];
-    ganador = 0;
-    turno_jugador.style.fontSize = "1em";
-    turno_jugador.style.color = "#7F8793";
-    var i;
-    for(i = 0; circulos.length; i++){
+    for(var i = 0; i<circulos.length; i++){
         circulos[i].style.animation = "none";
         cruzB[i].style.animation = "none";
         cruzA[i].style.animation = "none";
@@ -257,40 +234,33 @@ function setCasilla (celda){
 }
 
 function dibujar(casillero_nuevo, ganador) {
-
     var salir = false;
-    console.log("dibujar");
     for (var i = 0; i<casillero_nuevo.length && !salir; i++) {
         if (casillero_nuevo[i] !== casillero_viejo[i]) {
             salir = true;
             casillero_nuevo[i] === 1 ? dibujar_circulo(i) : dibujar_cruz(i);
             casillero_viejo = casillero_nuevo;
             if(ganador!==0){
-                console.log("dibujar partidaGanada");
                 partidaGanada(casillero_nuevo, ganador);
             }
         }
     }
-    console.log("turno " + turno + " turno global " + turno_global);
     if(turno_global===turno)
-        turno_jugador.textContent = "Tu turno";
+        turno_jugador.textContent = "Su turno";
     else
-        turno_jugador.textContent = "Turno del rival";
+        turno_jugador.textContent = "Espere su turno";
 }
 function dibujar_circulo(celda) {
-    console.log("dibujar_circulo");
     cirsvg[celda].style.display = "block";
     circulos[celda].style.animation = "1s trazar 1 forwards";
 }
 function dibujar_cruz(celda) {
-    console.log("dibujar_cruz");
     cruzsvg[celda].style.display = "block";
     cruzA[celda].style.animation = "0.5s stroke 1 forwards";
     cruzB[celda].style.animation = "0.5s 0.2s stroke 1 forwards";
 }
 
 function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
-    console.log("animacion partidaGanada");
 
     if (ganador === 1) {
         circulos[casillero1].style.strokeWidth = "3px";
@@ -310,12 +280,6 @@ function animacion_ganador(casillero1, casillero2, casillero3, ganador) {
 }
 
 function partidaGanada(casillero, ganador){
-    //TODO: si hay empate
-    /*if(ganador===-1){
-        empate();
-    }*/
-    console.log("funcion partidaGanada");
-
     if (casillero[0] === ganador && casillero[1] === ganador && casillero[2] === ganador)
         animacion_ganador(0, 1, 2, ganador);
     else if (casillero[3] === ganador && casillero[4] === ganador && casillero[5] === ganador)
@@ -332,7 +296,10 @@ function partidaGanada(casillero, ganador){
         animacion_ganador(0, 4, 8, ganador);
     else if (casillero[2] === ganador && casillero[4] === ganador && casillero[6] === ganador)
         animacion_ganador(2, 4, 6, ganador);
-
+    else if(casillero[0] !== 0 && casillero[1] !== 0 && casillero[2] !== 0 && casillero[3] !== 0 &&
+            casillero[4] !== 0 && casillero[5] !== 0 && casillero[6] !== 0 &&
+            casillero[7] !== 0 && casillero[8] !== 0)
+        ganador = -1;
     if (ganador > 0) {
         setTimeout(function () {
             if(ganador===1)
@@ -367,40 +334,45 @@ function partidaGanada(casillero, ganador){
             }
         },500);
     }
+    ruta_datos.on("value", function (snapshot) {
+        if(snapshot.exists()) {
+            ganador = snapshot.val().ganador;
+            $todo.mouseup(function () {
+                if(ganador!==0) {
+                    $cuadro.removeClass("animated bounceInDown");
+                    $casilla.css("display", "none");
+                    $cuadro.css("display", "flex");
+                }
+            });
+            $todo.on("touchend",function () {
+                if(ganador!==0) {
+                    $cuadro.removeClass("animated bounceInDown");
+                    $casilla.css("display", "none");
+                    $cuadro.css("display", "flex");
+                }
+            });
 
-    $main.mouseup(function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "none");
-            $cuadro.css("display", "flex");
-        }
-    });
-    $main.on("touchend",function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "none");
-            $cuadro.css("display", "flex");
+            $todo.mousedown(function () {
+                if(ganador!==0) {
+                    $cuadro.removeClass("animated bounceInDown");
+                    $casilla.css("display", "flex");
+                    $cuadro.css("display", "none");
+                }
+            });
+            $todo.on("touchstart", function () {
+                if(ganador !== 0) {
+                    $cuadro.removeClass("animated bounceInDown");
+                    $casilla.css("display", "flex");
+                    $cuadro.css("display", "none");
+                }
+            });
+            $cuadro.on("touchstart", function (e) {
+                e.stopPropagation();
+            });
+            $cuadro.mousedown(function (e) {
+                e.stopPropagation();
+            });
         }
     });
 
-    $main.mousedown(function () {
-        if(ganador!==0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "flex");
-            $cuadro.css("display", "none");
-        }
-    });
-    $main.on("touchstart", function () {
-        if(ganador !== 0) {
-            $cuadro.removeClass("animated bounceInDown");
-            $casilla.css("display", "flex");
-            $cuadro.css("display", "none");
-        }
-    });
-    $cuadro.on("touchstart", function (e) {
-        e.stopPropagation();
-    });
-    $cuadro.mousedown(function (e) {
-        e.stopPropagation();
-    });
 }

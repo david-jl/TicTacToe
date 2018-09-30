@@ -90,7 +90,7 @@ function init() {
         e.stopPropagation();
     });
     var i;
-    for(i = 0; circulos.length; i++){
+    for(i = 0; i<circulos.length; i++){
         circulos[i].style.animation = "none";
         cruzB[i].style.animation = "none";
         cruzA[i].style.animation = "none";
